@@ -11,7 +11,7 @@ describe ('App',() => {
   });
 
   it('should render a hello world in a div element', () => {
-    expect(wrapper.find('div').text()).toEqual("Hello World!");
+    expect(wrapper.find('div').text()).toEqual("Hello World!!");
   });
 
 });
