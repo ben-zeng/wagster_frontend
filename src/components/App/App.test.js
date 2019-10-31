@@ -6,12 +6,12 @@ describe ('App',() => {
   let wrapper;
   beforeEach(() => wrapper = shallow(<App />));
 
-  it('should render a div element', () => {
-    expect(wrapper.find('div').length).toEqual(1);
+  it('should render a nav element', () => {
+    expect(wrapper.find('nav').length).toEqual(1);
   });
 
-  it('should render a hello world in a div element', () => {
-    expect(wrapper.find('div').text()).toEqual("Hello World!!");
+  it('should render a profile page in a div element', () => {
+    expect(wrapper.find('div').text()).toEqual("Profile Page!");
   });
 
 });
