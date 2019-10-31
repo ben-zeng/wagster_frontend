@@ -9,7 +9,10 @@ import Profile from '../Profile/Profile';
 function App() {
   return (
     <div className="app-container">
-        Hello World!!
+        <Nav/>
+        <Login/>
+        <SignUp/>
+        <Profile/>
     </div>
   );
 }

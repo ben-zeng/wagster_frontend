@@ -10,3 +10,11 @@ nav{
   background: cadetblue;
   color: white;
 }
+
+.nav-links{
+  width: 40%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  list-style-type: none;
+}
