@@ -6,13 +6,13 @@ describe ('Login',() => {
     let wrapper;
     beforeEach(() => wrapper = shallow(<Profile/>));
 
-    it('should render a div element', () => {
-        expect(wrapper.find('div').length).toEqual(1);
+    it('should render a card element', () => {
+        expect(wrapper.find('Card').length).toEqual(1);
     });
 
-    it('should render a title text Login Page', () => {
-        expect(wrapper.find('div').text()).toEqual("Profile Page!");
-    });
+    // it('should render a title text Login Page', () => {
+    //     expect(wrapper.find('Card').text()).toEqual("Dog Name");
+    // });
 
 });
 
