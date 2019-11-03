@@ -2,6 +2,13 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import SignUp from './SignUp';
 
+
+jest.mock('react-router-dom', () => ({
+    useHistory: () => ({
+        push: jest.fn(),
+    }),
+}));
+
 describe ('Login',() => {
     let wrapper;
     beforeEach(() => wrapper = shallow(<SignUp />));
@@ -11,7 +18,7 @@ describe ('Login',() => {
     });
 
     it('should render a title text Login Page', () => {
-        expect(wrapper.find('div').text()).toEqual("Sign up Page!");
+        expect(wrapper.find('div').text()).toEqual("RegisterSign Up!Back");
     });
 
 });
