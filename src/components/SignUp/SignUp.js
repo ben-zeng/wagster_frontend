@@ -1,12 +1,11 @@
 import React, {useState} from 'react';
 import Axios from 'axios';
-import {useHistory} from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link} from 'react-router-dom'
+import {Link,useHistory} from 'react-router-dom'
 
 const signUpAPI = "http://localhost:3000/api/v1/users";
 //const signUpAPI = "https://api-wagster.herokuapp.com/api/v1/users";
