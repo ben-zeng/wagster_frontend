@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
+import { useHistory } from 'react-router-dom';
 // import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -10,6 +11,8 @@ import Container from '@material-ui/core/Container';
 import {Link} from 'react-router-dom'
 const signUpAPI = "http://localhost:3000/api/v1/users";
 //const signUpAPI = "https://api-wagster.herokuapp.com/api/v1/users";
+const getTokenAPI = "http://localhost:3000/api/v1/tokens/";
+
 
 // const useStyles = makeStyles(theme => ({
 //     '@global': {
@@ -39,6 +42,8 @@ const signUpAPI = "http://localhost:3000/api/v1/users";
 
 
 export default function SignIn() {
+    const history = useHistory();
+
     // const classes = useStyles();
 
     const [email, setEmail] = useState("");
@@ -53,9 +58,20 @@ export default function SignIn() {
                 "password": password
             }
         }).then(result => {
-            // localStorage.setItem('jwt-auth', result.data);
-            console.log(result.data)
-            // push('/login')
+            Axios.post(getTokenAPI, {
+
+                "user": {
+                    "email": email,
+                    "password": password
+                }
+            }).then(result => {
+                // console.log(result.data.token);
+                localStorage.setItem('jwt-auth', result.data.token);
+                }
+            );
+            console.log(result.data);
+
+            history.push("/");
         }).catch( error => {
             alert(error)
         })
