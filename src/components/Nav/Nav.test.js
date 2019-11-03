@@ -18,9 +18,5 @@ describe ('Login',() => {
         expect(wrapper.find('nav').length).toEqual(1);
     });
 
-    // it('should render a title text Login Page', () => {
-    //     expect(wrapper.find('div').text()).toEqual("Login Page!");
-    // });
-
 });
 
