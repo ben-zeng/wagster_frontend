@@ -2,6 +2,12 @@ import React from 'react';
 import { shallow } from 'enzyme';
 import Login from './Login';
 
+jest.mock('react-router-dom', () => ({
+    useHistory: () => ({
+        push: jest.fn(),
+    }),
+}));
+
 describe ('Login',() => {
     let wrapper;
     beforeEach(() => wrapper = shallow(<Login />));
