@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
+import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
@@ -74,6 +75,7 @@ export default function SignIn() {
 
     return (
         <Container component="main" maxWidth="xs">
+            <CssBaseline />
 
             <div className={classes.paper}>
 
