@@ -1,4 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
+import Axios from 'axios';
 // import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -33,65 +34,47 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
+
+
 export default function SignIn() {
-    const classes = useStyles();
+    // const classes = useStyles();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+        Axios.post(signUpAPI, {
+            email: this.state.email,
+            password: this.state.password
+        }).then(res => {
+            localStorage.setItem('jwt-auth', res.data);
+            this.props.history.push('/protected')
+        }).catch(() => this.setState({
+
+            error: true
+        }));
+    };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
-            <div className={classes.paper}>
+        <form onSubmit={handleSubmit}>
+            <label>
+                Email:
+                <input
+                    type="text"
+                    value={email}
+                    onChange={e => setEmail(e.target.value)}
+                />
+                <br/>
+                Password:
+                <input
+                    type="text"
+                    value={password}
+                    onChange={e => setPassword(e.target.value)}
+                />
+            </label> <br/>
 
-                <Typography component="h1" variant="h5">
-                    Register
-                </Typography>
-
-                <form className={classes.form} noValidate>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                    />
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                    />
-
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign Up!
-                    </Button>
-
-                    <Button
-                        component={ Link } to="/login"
-                        type="submit"
-                        fullWidth
-                        color="primary"
-                    >
-                        Back
-                    </Button>
-
-
-                </form>
-            </div>
-
-        </Container>
+            <input type="submit" value="Submit"/>
+        </form>
     );
 }
