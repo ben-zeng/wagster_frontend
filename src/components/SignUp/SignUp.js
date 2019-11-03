@@ -47,12 +47,18 @@ export default function SignIn() {
     const handleSubmit = (evt) => {
         evt.preventDefault();
         Axios.post(signUpAPI, {
-            email: email,
-            password: password
-        }).then(res => {
-            localStorage.setItem('jwt-auth', res.data);
-            this.props.history.push('/login')
-        });
+
+            "user": {
+                "email": email,
+                "password": password
+            }
+        }).then(result => {
+            // localStorage.setItem('jwt-auth', result.data);
+            console.log(result.data)
+            // push('/login')
+        }).catch( error => {
+            alert(error)
+        })
     };
 
     return (
