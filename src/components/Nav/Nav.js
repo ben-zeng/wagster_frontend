@@ -1,10 +1,17 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
+import Button from "@material-ui/core/Button";
+import Axios from "axios";
 
 function Nav() {
 
     const navLinkStyle = {
         color: 'white'
+    };
+
+    const handleClick = (evt) => {
+        evt.preventDefault();
+        localStorage.removeItem('jwt-auth');
     };
 
     return (
@@ -17,7 +24,14 @@ function Nav() {
                 <Link style={navLinkStyle} to="/login">
                     <li>Login</li>
                 </Link>
-                <li>Log Out</li>
+
+                <Button
+                    onClick={handleClick}
+                    color="primary"
+                >
+                    Log Out
+                </Button>
+
             </ul>
         </nav>
     );
