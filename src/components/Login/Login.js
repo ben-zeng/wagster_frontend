@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 // import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -6,7 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link} from 'react-router-dom'
+import {Link,useHistory} from 'react-router-dom'
+import Axios from "axios";
+
+const getTokenAPI = "http://localhost:3000/api/v1/tokens/";
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -33,8 +36,32 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function SignIn() {
+export default function Login() {
+    let history = useHistory();
+
     const classes = useStyles();
+
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const handleSubmit = (evt) => {
+        evt.preventDefault();
+            Axios.post(getTokenAPI, {
+
+                "user": {
+                    "email": email,
+                    "password": password
+                }
+            }).then(result => {
+                    // console.log(result.data.token);
+                    localStorage.setItem('jwt-auth', result.data.token);
+                history.push("/");
+
+
+        }).catch(error => {
+            alert(error)
+        })
+    };
 
     return (
         <Container component="main" maxWidth="xs">
@@ -45,7 +72,7 @@ export default function SignIn() {
                     Sign in
                 </Typography>
 
-                <form className={classes.form} noValidate>
+                <form className={classes.form} noValidate onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
@@ -56,6 +83,7 @@ export default function SignIn() {
                         name="email"
                         autoComplete="email"
                         autoFocus
+                        onChange={e => setEmail(e.target.value)}
                     />
                     <TextField
                         variant="outlined"
@@ -67,6 +95,7 @@ export default function SignIn() {
                         type="password"
                         id="password"
                         autoComplete="current-password"
+                        onChange={e => setPassword(e.target.value)}
                     />
 
                     <Button

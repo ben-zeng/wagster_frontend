@@ -17,7 +17,7 @@ describe ('Login',() => {
     });
 
     it('should render a title text Login Page', () => {
-      expect(wrapper.find('div').text()).toEqual("Login Page!");
+      expect(wrapper.find('div').text()).toEqual("Sign inSign InRegister");
     });
 
 });
