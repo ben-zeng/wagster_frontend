@@ -1,9 +1,11 @@
 import React from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import Button from "@material-ui/core/Button";
-import Axios from "axios";
+// import Axios from "axios";
 
 function Nav() {
+
+    const history = useHistory();
 
     const navLinkStyle = {
         color: 'white'
@@ -12,6 +14,7 @@ function Nav() {
     const handleClick = (evt) => {
         evt.preventDefault();
         localStorage.removeItem('jwt-auth');
+        history.push("/login")
     };
 
     return (
