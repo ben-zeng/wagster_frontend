@@ -12,6 +12,16 @@ const signUpAPI = "http://localhost:3000/api/v1/users";
 //const signUpAPI = "https://api-wagster.herokuapp.com/api/v1/users";
 const getTokenAPI = "http://localhost:3000/api/v1/tokens/";
 
+
+const resolveAPIEndpoint = (endpoint) => {
+    if (process.env.NODE_ENV === 'development') {
+        return `http://localhost:3000/api/v1/${endpoint}`
+    }
+    if (process.env.NODE_ENV === 'production') {
+        return `https://api-wagster.herokuapp.com/api/v1/${endpoint}`
+    }
+};
+
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
@@ -47,6 +57,7 @@ export default function SignIn() {
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
+
         Axios.post(signUpAPI, {
 
             "user": {
@@ -71,6 +82,7 @@ export default function SignIn() {
         }).catch(error => {
             alert(error)
         })
+
     };
 
     return (
