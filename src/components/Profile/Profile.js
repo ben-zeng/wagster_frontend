@@ -10,6 +10,7 @@ function Profile() {
     useEffect(() => {
         Axios.get(resolveAPIEndpoint("profiles/1")).then(result => {
             console.log(result.data);
+            console.log(process.env.NODE_ENV)
         }).catch(error => {
             alert(error)
         })
