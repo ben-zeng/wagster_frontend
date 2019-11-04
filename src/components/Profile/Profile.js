@@ -1,35 +1,70 @@
-import React, {useState, useEffect} from 'react';
-import Card from 'react-bootstrap/Card';
-import Button from 'react-bootstrap/Button';
+import React, {useEffect} from 'react';
+import { makeStyles } from '@material-ui/core/styles';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
+import CardActions from '@material-ui/core/CardActions';
+import CardContent from '@material-ui/core/CardContent';
+import CardMedia from '@material-ui/core/CardMedia';
+import Button from '@material-ui/core/Button';
+import Typography from '@material-ui/core/Typography';
+// import {Link,useHistory} from 'react-router-dom'
+import Axios from "axios";
+import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
 
-// const profileAPI = "https://api-wagster.herokuapp.com/api/v1/profiles/1";
-const profileAPI = "http://localhost:3000/api/v1/profiles/1";
+    const useStyles = makeStyles({
+        card: {
+          maxWidth: 345,
+        },
+        media: {
+          height: 140,
+        },
+    });
+export default function Profile() {
 
-function Profile() {
+    
+    const classes = useStyles();
+
 
     useEffect(() => {
-        fetchProfile();
-    },[]);
+        Axios.get(resolveAPIEndpoint("profiles/1") ).then(result =>{
+            console.log(result.data);
+        }).catch(error => {
+            alert(error)
+        })
+    },  []);
+    
+    
+    return (
+        <Card className={classes.card}>
+          <CardActionArea>
+            <CardMedia
+              className={classes.media}
+            //   image="/static/images/cards/contemplative-reptile.jpg"
+              title="Contemplative Reptile"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                Lizard
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                Profile.biography
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+            <Button size="small" color="primary">
+              Nope
+            </Button>
+            <Button size="small" color="primary">
+              Woof
+            </Button>
+          </CardActions>
+        </Card>
+      );
+    }
+       
 
-    const fetchProfile = async () => {
-        const data = await fetch (profileAPI).then(response => response.json());
-        console.log(data);
-    };
+// export default Profile;
 
-  return (
-      <Card style={{ width: '18rem' }}>
-          <Card.Img variant="top" src="https://www.sheknows.com/wp-content/uploads/2018/08/fajkx3pdvvt9ax6btssg.jpeg" />
-          <Card.Body>
-              <Card.Title>Dog Name</Card.Title>
-              <Card.Text>
-                  Dog Bio
-              </Card.Text>
-              <Button variant="primary">Yes!</Button>
 
-              <Button variant="primary">No! </Button>
-          </Card.Body>
-      </Card>
-  );
-}
 
-export default Profile;
