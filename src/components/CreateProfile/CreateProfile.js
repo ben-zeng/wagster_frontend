@@ -43,26 +43,36 @@ export default function CreateProfile() {
 
     const [ dogName, setDogName ] = useState("");
     const [ biography, setBiography ] = useState("");
-    // TODO: Use these for picture
-    // const [ picture, setPicture ] = useState("");
-
-    console.log({ dogName, biography });
+    const [ picture, setPicture ] = useState(null);
 
     const handleSubmit = (event) => {
         event.preventDefault();
 
+        const reader = new FileReader();
+
+        reader.addEventListener("load", () => {
+            postForm(reader.result);
+        }, false);
+
+        if (picture) {
+            reader.readAsDataURL(picture);
+        } else {
+            alert('Please select a photo of your dog.')
+        }
+    };
+
+    const postForm = (pictureDataURL) => {
         const userJwt = localStorage.getItem('jwt-auth');
 
-        // TODO: Get user_id from global state
-        // TODO: handle picture upload
         Axios.post(
             createProfileEndpoint,
             {
                 profile: {
                     dog_name: dogName,
                     biography: biography,
-                    user_id: "2",
-                    picture: ""
+                    // TODO: This shouldn't be hardcoded
+                    user_id: "3",
+                    picture: pictureDataURL
                 }
             },
             {
@@ -114,6 +124,8 @@ export default function CreateProfile() {
                         rows="4"
                         onChange={event => setBiography(event.target.value)}
                     />
+
+                    <input type="file" onChange={event => setPicture(event.target.files[0])}/>
 
                     <Button
                         type="submit"
