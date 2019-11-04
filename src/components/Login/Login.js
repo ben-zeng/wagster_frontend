@@ -8,8 +8,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {Link,useHistory} from 'react-router-dom'
 import Axios from "axios";
-
-const getTokenAPI = "http://localhost:3000/api/v1/tokens/";
+import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -46,14 +45,13 @@ export default function Login() {
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-            Axios.post(getTokenAPI, {
+            Axios.post(resolveAPIEndpoint("tokens"), {
 
                 "user": {
                     "email": email,
                     "password": password
                 }
             }).then(result => {
-                    // console.log(result.data.token);
                     localStorage.setItem('jwt-auth', result.data.token);
                 history.push("/");
 

@@ -6,11 +6,8 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link,useHistory} from 'react-router-dom'
-
-const signUpAPI = "http://localhost:3000/api/v1/users";
-//const signUpAPI = "https://api-wagster.herokuapp.com/api/v1/users";
-const getTokenAPI = "http://localhost:3000/api/v1/tokens/";
+import {Link,useHistory} from 'react-router-dom';
+import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -47,14 +44,15 @@ export default function SignIn() {
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-        Axios.post(signUpAPI, {
+
+        Axios.post(resolveAPIEndpoint("users"), {
 
             "user": {
                 "email": email,
                 "password": password
             }
         }).then(result => {
-            Axios.post(getTokenAPI, {
+            Axios.post(resolveAPIEndpoint("tokens"), {
 
                 "user": {
                     "email": email,
@@ -71,6 +69,7 @@ export default function SignIn() {
         }).catch(error => {
             alert(error)
         })
+
     };
 
     return (
