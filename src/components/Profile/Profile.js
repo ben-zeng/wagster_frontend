@@ -2,8 +2,8 @@ import React, {useState, useEffect} from 'react';
 import Card from 'react-bootstrap/Card';
 import Button from 'react-bootstrap/Button';
 
-const profileAPI = "https://api-wagster.herokuapp.com/api/v1/profiles/1";
-// const profileAPI = "http://localhost:3000/api/v1/profiles/1";
+// const profileAPI = "https://api-wagster.herokuapp.com/api/v1/profiles/1";
+const profileAPI = "http://localhost:3000/api/v1/profiles/1";
 
 function Profile() {
 
