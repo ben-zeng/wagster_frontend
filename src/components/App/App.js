@@ -12,7 +12,6 @@ function App() {
         <Router>
             <div className="app">
                 <Nav/>
- 
 
                 <Switch>
                 <Route path="/profile" exact component={Profile} />
