@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -21,19 +21,54 @@ import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
     });
 export default function Profile() {
 
-    
+    const [data, setData]  = useState(null);
+
     const classes = useStyles();
 
+    // let dataStore = undefined;
+
+
+    //
+    // useEffect(() => {
+    //     Axios.get(resolveAPIEndpoint("profiles/1") ).then(result =>{
+    //         dataStore = result.data;
+    //         console.log(dataStore.dog_name);
+    //
+    //
+    //
+    //     }).catch(error => {
+    //         alert(error)
+    //     })
+    // },  []);
+
+
+    // useEffect(async () => {
+    //     const result = await Axios(resolveAPIEndpoint("profiles/1"));
+    //     // dataStore = result;
+    //     console.log(result.data.dog_name);
+    //     setData(result.data);
+    // },[]);
+
+    // useEffect(() => {
+    //
+    //     const fetchData = async () => {
+    //         const result = await Axios(resolveAPIEndpoint("profiles/1"),
+    //         );
+    //         setData(result.data);
+    //     };
+    //
+    //     fetchData();
+    //
+    // }, []);
 
     useEffect(() => {
-        Axios.get(resolveAPIEndpoint("profiles/1") ).then(result =>{
-            console.log(result.data);
-        }).catch(error => {
-            alert(error)
-        })
-    },  []);
-    
-    
+        Axios.get(resolveAPIEndpoint("profiles/1") ).then(response => setData(response));
+    }, []);
+
+    if (data === null) {
+        return <p>Loading profile...</p>;
+    }
+
     return (
         <Card className={classes.card}>
           <CardActionArea>
@@ -44,7 +79,8 @@ export default function Profile() {
             />
             <CardContent>
               <Typography gutterBottom variant="h5" component="h2">
-                Lizard
+                {data.data.dog_name}
+
               </Typography>
               <Typography variant="body2" color="textSecondary" component="p">
                 Profile.biography
@@ -62,6 +98,6 @@ export default function Profile() {
         </Card>
       );
     }
-       
+
 
 
