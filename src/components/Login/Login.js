@@ -4,11 +4,11 @@ import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link,useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import Axios from "axios";
-import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
+import {resolveAPIEndpoint} from '../../helpers/APIResolveHelper';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -45,15 +45,15 @@ export default function Login() {
 
     const handleSubmit = (evt) => {
         evt.preventDefault();
-            Axios.post(resolveAPIEndpoint("tokens"), {
+        Axios.post(resolveAPIEndpoint("tokens"), {
 
-                "user": {
-                    "email": email,
-                    "password": password
-                }
-            }).then(result => {
-                    localStorage.setItem('jwt-auth', result.data.token);
-                history.push("/");
+            "user": {
+                "email": email,
+                "password": password
+            }
+        }).then(result => {
+            localStorage.setItem('jwt-auth', result.data.token);
+            history.push("/");
 
 
         }).catch(error => {
@@ -63,7 +63,7 @@ export default function Login() {
 
     return (
         <Container component="main" maxWidth="xs">
-            <CssBaseline />
+            <CssBaseline/>
             <div className={classes.paper}>
 
                 <Typography component="h1" variant="h5">
@@ -107,7 +107,7 @@ export default function Login() {
                     </Button>
 
                     <Button
-                        component={ Link } to="/signup"
+                        component={Link} to="/signup"
                         type="submit"
                         fullWidth
                         color="primary"
