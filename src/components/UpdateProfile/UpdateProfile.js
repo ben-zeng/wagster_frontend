@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -7,8 +7,10 @@ import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {Link,useHistory} from 'react-router-dom'
+import {resolveAPIEndpoint} from '../../helpers/APIResolveHelper';
 
-const createProfileEndpoint = "http://localhost:3000/api/v1/profiles";
+
+const createProfileEndpoint = "http://localhost:3000/api/v1/profiles/4";
 //const createProfileEndpoint = "https://api-wagster.herokuapp.com/api/v1/profiles";
 
 const useStyles = makeStyles(theme => ({
@@ -36,14 +38,23 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function CreateProfile() {
+export default function UpdateProfile() {
     const history = useHistory();
-
+    const [data, setData]  = useState(null);
     const classes = useStyles();
 
     const [ dogName, setDogName ] = useState("");
     const [ biography, setBiography ] = useState("");
     const [ picture, setPicture ] = useState(null);
+
+    useEffect(() => {
+        Axios.get(resolveAPIEndpoint("profiles/4") ).then(response => {
+            setData(response);
+        });
+    }, []);
+    if (data === null) {
+        return <p>Loading profile...</p>;
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -51,7 +62,7 @@ export default function CreateProfile() {
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            postForm(reader.result);
+            patchForm(reader.result);
         }, false);
 
         if (picture) {
@@ -61,23 +72,22 @@ export default function CreateProfile() {
         }
     };
 
-    const postForm = (pictureDataURL) => {
+    const patchForm = (pictureDataURL) => {
         const userJwt = localStorage.getItem('jwt-auth');
 
-        Axios.post(
+        Axios.patch(
             createProfileEndpoint,
             {
                 profile: {
                     dog_name: dogName,
                     biography: biography,
-                    // TODO: This shouldn't be hardcoded
                     user_id: "4",
                     picture: pictureDataURL
                 }
             },
             {
                 headers: {
-                    Authorization: userJwt
+                    Authorization: userJwt,
                 }
             }
         ).then(result => {
@@ -96,7 +106,7 @@ export default function CreateProfile() {
             <div className={classes.paper}>
 
                 <Typography component="h1" variant="h5">
-                    Create Profile
+                    Update Profile
                 </Typography>
 
                 <form className={classes.form} noValidate onSubmit={handleSubmit}>
@@ -106,7 +116,7 @@ export default function CreateProfile() {
                         required
                         fullWidth
                         id="dog_name"
-                        label="Dog Name"
+                        defaultValue={data.data.dog_name}
                         name="dog_name"
                         autoFocus
                         onChange={event => setDogName(event.target.value)}
@@ -118,7 +128,7 @@ export default function CreateProfile() {
                         required
                         fullWidth
                         name="biography"
-                        label="Biography"
+                        defaultValue={data.data.biography}
                         id="biography"
                         multiline
                         rows="4"
@@ -134,7 +144,7 @@ export default function CreateProfile() {
                         color="primary"
                         className={classes.submit}
                     >
-                        Create Profile!
+                        Update Profile!
                     </Button>
 
                 </form>
