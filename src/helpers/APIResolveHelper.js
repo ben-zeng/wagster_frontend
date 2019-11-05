@@ -1,20 +1,6 @@
-const API_HOST_PRODUCTION = "https://api-wagster.herokuapp.com";
-const API_HOST_DEVELOPMENT = "http://localhost:3000";
-
 export function resolveAPIEndpoint(endpoint) {
-    if (process.env.NODE_ENV === 'production') {
-        return `${API_HOST_PRODUCTION}/api/v1/${endpoint}`;
-    }
-    else {
-        return `${API_HOST_DEVELOPMENT}/api/v1/${endpoint}`;
-    }
-}
-
-export function resolveAPIImage(imagePath) {
-    if (process.env.NODE_ENV === 'production') {
-        return `${API_HOST_PRODUCTION}${imagePath}`;
-    }
-    else {
-        return `${API_HOST_DEVELOPMENT}${imagePath}`;
-    }
+    if (process.env.NODE_ENV === 'production')
+        return `https://api-wagster.herokuapp.com/api/v1/${endpoint}`;
+    else
+        return `http://localhost:3000/api/v1/${endpoint}`;
 }
