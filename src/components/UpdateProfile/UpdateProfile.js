@@ -9,10 +9,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useHistory} from 'react-router-dom'
 import { resolveAPIEndpoint, resolveAPIImage } from '../../helpers/APIResolveHelper';
-
-
-const createProfileEndpoint = "http://localhost:3000/api/v1/profiles/1";
-//const createProfileEndpoint = "https://api-wagster.herokuapp.com/api/v1/profiles";
+import { useGlobalState } from '../../helpers/GlobalState';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -42,6 +39,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function UpdateProfile() {
+    const [currentUser] = useGlobalState("currentUser");
+
     const history = useHistory();
     const classes = useStyles();
 
@@ -51,7 +50,7 @@ export default function UpdateProfile() {
     const [ currentPicture, setCurrentPicture ] = useState(null);
 
     useEffect(() => {
-        Axios.get(resolveAPIEndpoint("profiles/1") ).then(response => {
+        Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}`)).then(response => {
             setDogName(response.data.dog_name);
             setBiography(response.data.biography);
             setCurrentPicture(response.data.picture.url);
@@ -78,14 +77,12 @@ export default function UpdateProfile() {
         }
     };
 
-    const patchForm = (pictureDataURL) => {
-        const userJwt = localStorage.getItem('jwt-auth');
-        
+    const patchForm = (pictureDataURL) => {        
         const formData = {
             profile: {
                 dog_name: dogName,
                 biography: biography,
-                user_id: "1"
+                user_id: currentUser.userId
             }
         };
 
@@ -94,11 +91,11 @@ export default function UpdateProfile() {
         }
 
         Axios.patch(
-            createProfileEndpoint,
+            resolveAPIEndpoint(`profiles/${currentUser.userId}`),
             formData,
             {
                 headers: {
-                    Authorization: userJwt,
+                    Authorization: currentUser.jsonWebToken
                 }
             }
         ).then(result => {

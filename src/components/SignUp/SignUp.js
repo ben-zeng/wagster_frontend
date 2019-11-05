@@ -1,13 +1,15 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link,useHistory} from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
+import { useGlobalState } from '../../helpers/GlobalState';
+
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -35,6 +37,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignIn() {
+    const [currentUser, setCurrentUser] = useGlobalState("currentUser");
+
+    console.log({ currentUser });
+
     const history = useHistory();
 
     const classes = useStyles();
@@ -45,31 +51,23 @@ export default function SignIn() {
     const handleSubmit = (evt) => {
         evt.preventDefault();
 
-        Axios.post(resolveAPIEndpoint("users"), {
+        const userData = {
+            user: { email, password }
+        };
 
-            "user": {
-                "email": email,
-                "password": password
-            }
-        }).then(result => {
-            Axios.post(resolveAPIEndpoint("tokens"), {
+        Axios.post(resolveAPIEndpoint("users"), userData).then(result => {
+            Axios.post(resolveAPIEndpoint("tokens"), userData).then(result => {
+                setCurrentUser({
+                    userId: result.data.user_id,
+                    jsonWebToken: result.data.token,
+                    isLoggedIn: true
+                });
 
-                "user": {
-                    "email": email,
-                    "password": password
-                }
-            }).then(result => {
-                    // console.log(result.data.token);
-                    localStorage.setItem('jwt-auth', result.data.token);
-                }
-            );
-            console.log(result.data);
-
-            history.push("/");
+                history.push("/profile/create");
+            });
         }).catch(error => {
             alert(error)
-        })
-
+        });
     };
 
     return (

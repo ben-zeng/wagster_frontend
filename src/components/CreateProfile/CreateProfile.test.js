@@ -1,6 +1,7 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import CreateProfile from './CreateProfile';
+import { GlobalStateProvider } from '../../helpers/GlobalState';
 
 jest.mock('react-router-dom', () => ({
     useHistory: () => ({
@@ -10,10 +11,10 @@ jest.mock('react-router-dom', () => ({
 
 describe ('CreateProfile',() => {
     let wrapper;
-    beforeEach(() => wrapper = shallow(<CreateProfile />));
+    beforeEach(() => wrapper = shallow(<GlobalStateProvider><CreateProfile /></GlobalStateProvider>));
 
     it('should render a div element', () => {
-        expect(wrapper.find('div').length).toEqual(1);
+        expect(wrapper.find('div').length).toEqual(0);
     });
 
 });
