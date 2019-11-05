@@ -1,10 +1,11 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Profile from './Profile';
+import { GlobalStateProvider } from '../../helpers/GlobalState';
 
 describe ('Login',() => {
     let wrapper;
-    beforeEach(() => wrapper = shallow(<Profile/>));
+    beforeEach(() => wrapper = shallow(<GlobalStateProvider> <Profile/> </GlobalStateProvider>));
 
     it('should render a card element', () => {
         expect(wrapper.find('Card').length).toEqual(0);
