@@ -1,15 +1,23 @@
 import React from 'react';
 import {useHistory} from 'react-router-dom'
 import Button from "@material-ui/core/Button";
-// import Axios from "axios";
+import { useGlobalState } from '../../helpers/GlobalState';
 
 function Nav() {
+    const [currentUser, setCurrentUser] = useGlobalState("currentUser");
+    console.log({ currentUser })
 
     const history = useHistory();
 
-    const handleClick = (evt) => {
-        evt.preventDefault();
-        localStorage.removeItem('jwt-auth');
+    const handleClick = (event) => {
+        event.preventDefault();
+
+        setCurrentUser({
+            userId: null,
+            jsonWebToken: null,
+            isLoggedIn: false
+        });
+
         history.push("/login")
     };
 
@@ -24,12 +32,14 @@ function Nav() {
                 {/*    <li>Login</li>*/}
                 {/*</Link>*/}
 
-                <Button
-                    onClick={handleClick}
-                    color="primary"
-                >
-                    Log Out
-                </Button>
+                {currentUser.isLoggedIn && 
+                    <Button
+                        onClick={handleClick}
+                        color="primary"
+                    >
+                        Log Out
+                    </Button>
+                }
 
             </ul>
         </nav>

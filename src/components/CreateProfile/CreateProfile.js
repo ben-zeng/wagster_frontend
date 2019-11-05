@@ -8,9 +8,7 @@ import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useHistory} from 'react-router-dom'
 import {resolveAPIEndpoint} from '../../helpers/APIResolveHelper';
-
-// const createProfileEndpoint = "http://localhost:3000/api/v1/profiles";
-// //const createProfileEndpoint = "https://api-wagster.herokuapp.com/api/v1/profiles";
+import { useGlobalState } from '../../helpers/GlobalState';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -38,6 +36,8 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function CreateProfile() {
+    const [currentUser] = useGlobalState("currentUser");
+
     const history = useHistory();
 
     const classes = useStyles();
@@ -63,7 +63,6 @@ export default function CreateProfile() {
     };
 
     const postForm = (pictureDataURL) => {
-        const userJwt = localStorage.getItem('jwt-auth');
 
         Axios.post(
             resolveAPIEndpoint("profiles"),
@@ -71,20 +70,19 @@ export default function CreateProfile() {
                 profile: {
                     dog_name: dogName,
                     biography: biography,
-                    // TODO: This shouldn't be hardcoded
-                    user_id: "1",
+                    user_id: currentUser.userId,
                     picture: pictureDataURL
                 }
             },
             {
                 headers: {
-                    Authorization: userJwt
+                    Authorization: currentUser.jsonWebToken
                 }
             }
         ).then(result => {
             console.log(result.data);
 
-            history.push("/");
+            history.push("/profile");
         }).catch(error => {
             alert(error);
         });

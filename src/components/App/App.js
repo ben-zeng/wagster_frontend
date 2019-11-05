@@ -7,24 +7,27 @@ import SignUp from '../SignUp/SignUp';
 import Profile from '../Profile/Profile';
 import CreateProfile from '../CreateProfile/CreateProfile';
 import UpdateProfile from '../UpdateProfile/UpdateProfile';
+import { GlobalStateProvider } from '../../helpers/GlobalState';
 
 
 function App() {
     return (
-        <Router>
-            <div className="app">
-                <Nav/>
+        <GlobalStateProvider>
+            <Router>
+                <div className="app">
+                    <Nav/>
 
-                <Switch>
-                <Route path="/profile" exact component={Profile} />
-                <Route path="/login" component={Login} />
-                <Route path="/signup" component={SignUp} />
-                <Route path="/profile/create" exact component={CreateProfile} />
-                <Route path="/profile/update" exact component={UpdateProfile} />
-                </Switch>
+                    <Switch>
+                    <Route path="/profile" exact component={Profile} />
+                    <Route path="/login" component={Login} />
+                    <Route path="/signup" component={SignUp} />
+                    <Route path="/profile/create" exact component={CreateProfile} />
+                    <Route path="/profile/update" exact component={UpdateProfile} />
+                    </Switch>
 
-            </div>
-        </Router>
+                </div>
+            </Router>
+        </GlobalStateProvider>
     );
 }
 

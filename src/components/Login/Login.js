@@ -6,9 +6,10 @@ import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link, useHistory} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom';
 import Axios from "axios";
 import {resolveAPIEndpoint} from '../../helpers/APIResolveHelper';
+import { useGlobalState } from '../../helpers/GlobalState';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
@@ -36,6 +37,10 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Login() {
+    const [currentUser, setCurrentUser] = useGlobalState("currentUser");
+    
+    console.log({ currentUser })
+
     let history = useHistory();
 
     const classes = useStyles();
@@ -43,19 +48,21 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
+    const handleSubmit = (event) => {
+        event.preventDefault();
         Axios.post(resolveAPIEndpoint("tokens"), {
-
             "user": {
                 "email": email,
                 "password": password
             }
         }).then(result => {
-            localStorage.setItem('jwt-auth', result.data.token);
-            history.push("/");
+            setCurrentUser({
+                userId: result.data.user_id,
+                jsonWebToken: result.data.token,
+                isLoggedIn: true
+            });
 
-
+            history.push("/profile");
         }).catch(error => {
             alert(error)
         })
