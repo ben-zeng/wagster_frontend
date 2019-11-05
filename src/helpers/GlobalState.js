@@ -3,7 +3,7 @@ import { createGlobalState } from 'react-hooks-global-state';
 const initialState = {
     currentUser: {
         jsonWebToken: null,
-        userIsLoggedIn: false,
+        isLoggedIn: false,
         userId: null
     }
 };
