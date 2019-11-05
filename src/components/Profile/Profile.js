@@ -51,15 +51,36 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
+const errorIs404 = (error) => {
+  return error.response &&
+    error.response.status === 404;
+};
+
 export default function Profile() {
-  const [currentUser] = useGlobalState("currentUser");
+  const [ currentUser ] = useGlobalState("currentUser");
+  const history = useHistory();
+
+  if (!currentUser.isLoggedIn) {
+    history.push("/login");
+  }
 
   const [data, setData] = useState(null);
 
   const classes = useStyles();
 
   useEffect(() => {
-    Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}`)).then(response => setData(response));
+    if (!currentUser.isLoggedIn) {
+      return;
+    }
+    Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}`))
+      .then(response => setData(response))
+      .catch(error => {
+        if (errorIs404(error)) {
+          history.push("/profile/create");
+        } else {
+          console.error(error);
+        }
+      });
   }, []);
 
   if (data === null) {
@@ -68,14 +89,6 @@ export default function Profile() {
 
   return (
     <Card className={classes.card}>
-      <Button
-        component={Link} to="/profile/create"
-        type="submit"
-        fullWidth
-        color="primary"
-      >
-        Create Profile
-      </Button>
       <Button
         component={Link} to="/profile/update"
         type="submit"

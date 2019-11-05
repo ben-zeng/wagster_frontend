@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
@@ -35,16 +35,41 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function CreateProfile() {
-    const [currentUser] = useGlobalState("currentUser");
+const errorIs404 = (error) => {
+    return error.response &&
+        error.response.status === 404;
+};
 
+export default function CreateProfile() {
+    const [ currentUser ] = useGlobalState("currentUser");
     const history = useHistory();
+
+    if (!currentUser.isLoggedIn) {
+      history.push("/login");
+    }
 
     const classes = useStyles();
 
     const [ dogName, setDogName ] = useState("");
     const [ biography, setBiography ] = useState("");
     const [ picture, setPicture ] = useState(null);
+
+    useEffect(() => {
+        if (!currentUser.isLoggedIn) {
+          return;
+        }
+        Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}`))
+          .then(response => {
+            if (response.data && response.data.user_id === currentUser.userId) {
+              history.push("/profile");
+            }
+          })
+          .catch(error => {
+            if (!errorIs404(error)) {
+                console.error(error);
+            }
+          })
+      }, []);
 
     const handleSubmit = (event) => {
         event.preventDefault();

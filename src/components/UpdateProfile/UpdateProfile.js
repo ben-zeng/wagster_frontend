@@ -39,9 +39,13 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function UpdateProfile() {
-    const [currentUser] = useGlobalState("currentUser");
-
+    const [ currentUser ] = useGlobalState("currentUser");
     const history = useHistory();
+
+    if (!currentUser.isLoggedIn) {
+      history.push("/login");
+    }
+
     const classes = useStyles();
 
     const [ dogName, setDogName ] = useState("");
@@ -50,6 +54,9 @@ export default function UpdateProfile() {
     const [ currentPicture, setCurrentPicture ] = useState(null);
 
     useEffect(() => {
+        if (!currentUser.isLoggedIn) {
+            return;
+        }
         Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}`)).then(response => {
             setDogName(response.data.dog_name);
             setBiography(response.data.biography);
