@@ -1,14 +1,17 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
+import Avatar from '@material-ui/core/Avatar';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import {useHistory} from 'react-router-dom'
+import { resolveAPIEndpoint, resolveAPIImage } from '../../helpers/APIResolveHelper';
 
-const createProfileEndpoint = "http://localhost:3000/api/v1/profiles";
+
+const createProfileEndpoint = "http://localhost:3000/api/v1/profiles/1";
 //const createProfileEndpoint = "https://api-wagster.herokuapp.com/api/v1/profiles";
 
 const useStyles = makeStyles(theme => ({
@@ -23,7 +26,9 @@ const useStyles = makeStyles(theme => ({
         flexDirection: 'column',
         alignItems: 'center',
     },
-    avatar: {
+    bigAvatar: {
+        width: 100,
+        height: 100,
         margin: theme.spacing(1),
         backgroundColor: theme.palette.secondary.main,
     },
@@ -36,14 +41,26 @@ const useStyles = makeStyles(theme => ({
     },
 }));
 
-export default function CreateProfile() {
+export default function UpdateProfile() {
     const history = useHistory();
-
     const classes = useStyles();
 
     const [ dogName, setDogName ] = useState("");
     const [ biography, setBiography ] = useState("");
     const [ picture, setPicture ] = useState(null);
+    const [ currentPicture, setCurrentPicture ] = useState(null);
+
+    useEffect(() => {
+        Axios.get(resolveAPIEndpoint("profiles/1") ).then(response => {
+            setDogName(response.data.dog_name);
+            setBiography(response.data.biography);
+            setCurrentPicture(response.data.picture.url);
+        });
+    }, []);
+
+    if (dogName === null) {
+        return <p>Loading profile...</p>;
+    }
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -51,39 +68,43 @@ export default function CreateProfile() {
         const reader = new FileReader();
 
         reader.addEventListener("load", () => {
-            postForm(reader.result);
+            patchForm(reader.result);
         }, false);
 
         if (picture) {
             reader.readAsDataURL(picture);
         } else {
-            alert('Please select a photo of your dog.')
+            patchForm();
         }
     };
 
-    const postForm = (pictureDataURL) => {
+    const patchForm = (pictureDataURL) => {
         const userJwt = localStorage.getItem('jwt-auth');
+        
+        const formData = {
+            profile: {
+                dog_name: dogName,
+                biography: biography,
+                user_id: "1"
+            }
+        };
 
-        Axios.post(
+        if (pictureDataURL) {
+            formData.profile.picture = pictureDataURL;
+        }
+
+        Axios.patch(
             createProfileEndpoint,
-            {
-                profile: {
-                    dog_name: dogName,
-                    biography: biography,
-                    // TODO: This shouldn't be hardcoded
-                    user_id: "1",
-                    picture: pictureDataURL
-                }
-            },
+            formData,
             {
                 headers: {
-                    Authorization: userJwt
+                    Authorization: userJwt,
                 }
             }
         ).then(result => {
             console.log(result.data);
 
-            history.push("/");
+            history.push("/profile");
         }).catch(error => {
             alert(error);
         });
@@ -96,7 +117,7 @@ export default function CreateProfile() {
             <div className={classes.paper}>
 
                 <Typography component="h1" variant="h5">
-                    Create Profile
+                    Update Profile
                 </Typography>
 
                 <form className={classes.form} noValidate onSubmit={handleSubmit}>
@@ -106,9 +127,8 @@ export default function CreateProfile() {
                         required
                         fullWidth
                         id="dog_name"
-                        label="Dog Name"
+                        value={dogName}
                         name="dog_name"
-                        autoFocus
                         onChange={event => setDogName(event.target.value)}
                     />
 
@@ -118,12 +138,14 @@ export default function CreateProfile() {
                         required
                         fullWidth
                         name="biography"
-                        label="Biography"
+                        value={biography}
                         id="biography"
                         multiline
                         rows="4"
                         onChange={event => setBiography(event.target.value)}
                     />
+
+                    <Avatar alt="{dogName}" src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
 
                     <input type="file" onChange={event => setPicture(event.target.files[0])}/>
 
@@ -134,7 +156,7 @@ export default function CreateProfile() {
                         color="primary"
                         className={classes.submit}
                     >
-                        Create Profile!
+                        Update Profile!
                     </Button>
 
                 </form>

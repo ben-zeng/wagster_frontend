@@ -6,6 +6,8 @@ import Login from '../Login/Login';
 import SignUp from '../SignUp/SignUp';
 import Profile from '../Profile/Profile';
 import CreateProfile from '../CreateProfile/CreateProfile';
+import UpdateProfile from '../UpdateProfile/UpdateProfile';
+
 
 function App() {
     return (
@@ -17,8 +19,8 @@ function App() {
                 <Route path="/profile" exact component={Profile} />
                 <Route path="/login" component={Login} />
                 <Route path="/signup" component={SignUp} />
-                <Route path="/profile/create" component={CreateProfile} />
-                
+                <Route path="/profile/create" exact component={CreateProfile} />
+                <Route path="/profile/update" exact component={UpdateProfile} />
                 </Switch>
 
             </div>

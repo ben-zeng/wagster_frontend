@@ -7,7 +7,7 @@ describe ('Login',() => {
     beforeEach(() => wrapper = shallow(<Profile/>));
 
     it('should render a card element', () => {
-        expect(wrapper.find('Card').length).toEqual(1);
+        expect(wrapper.find('Card').length).toEqual(0);
     });
 
     // it('should render a title text Login Page', () => {

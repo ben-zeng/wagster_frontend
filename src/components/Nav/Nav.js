@@ -7,10 +7,6 @@ function Nav() {
 
     const history = useHistory();
 
-    const navLinkStyle = {
-        color: 'white'
-    };
-
     const handleClick = (evt) => {
         evt.preventDefault();
         localStorage.removeItem('jwt-auth');
