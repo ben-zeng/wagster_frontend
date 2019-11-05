@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
 import {makeStyles} from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {Link,useHistory} from 'react-router-dom'
+import {useHistory} from 'react-router-dom'
 import { resolveAPIEndpoint, resolveAPIImage } from '../../helpers/APIResolveHelper';
 
 
