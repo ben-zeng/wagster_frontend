@@ -71,7 +71,7 @@ export default function CreateProfile() {
                     dog_name: dogName,
                     biography: biography,
                     // TODO: This shouldn't be hardcoded
-                    user_id: "4",
+                    user_id: "1",
                     picture: pictureDataURL
                 }
             },

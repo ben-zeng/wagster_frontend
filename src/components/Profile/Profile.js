@@ -59,11 +59,6 @@ export default function Profile() {
     const [data, setData]  = useState(null);
 
     const classes = useStyles();
-    const [expanded, setExpanded] = React.useState(false);
-    const handleExpandClick = () => {
-      setExpanded(!expanded);
-    };
-
 
     useEffect(() => {
         Axios.get(resolveAPIEndpoint("profiles/1") ).then(response => setData(response));
