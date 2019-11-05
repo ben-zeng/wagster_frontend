@@ -13,9 +13,8 @@ import { yellow } from '@material-ui/core/colors';
 import PetsIcon from '@material-ui/icons/Pets';
 import CancelIcon from '@material-ui/icons/Cancel';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
-// import {Link,useHistory} from 'react-router-dom'
-import {resolveAPIEndpoint} from "../../helpers/APIResolveHelper";
 import Axios from "axios";
+import { resolveAPIEndpoint, resolveAPIImage } from '../../helpers/APIResolveHelper';
 
     const useStyles = makeStyles(theme => ({
       card: {
@@ -56,30 +55,54 @@ export default function Profile() {
     const classes = useStyles();
 
     useEffect(() => {
-        Axios.get(resolveAPIEndpoint("profiles/1")).then(result => {
-            console.log(result.data);
-            console.log(process.env.NODE_ENV)
-        }).catch(error => {
-            alert(error)
-        })
+        Axios.get(resolveAPIEndpoint("profiles/1") ).then(response => setData(response));
     }, []);
 
+    if (data === null) {
+        return <p>Loading profile...</p>;
+    }
 
     return (
-        <Card style={{width: '18rem'}}>
-            <Card.Img variant="top"
-                      src="https://www.sheknows.com/wp-content/uploads/2018/08/fajkx3pdvvt9ax6btssg.jpeg"/>
-            <Card.Body>
-                <Card.Title>Dog Name</Card.Title>
-                <Card.Text>
-                    Dog Bio
-                </Card.Text>
-                <Button variant="primary">Yes!</Button>
-
-                <Button variant="primary">No! </Button>
-            </Card.Body>
+        <Card className={classes.card}>
+          <CardActionArea>
+          <CardHeader
+            avatar={
+             <Avatar aria-label="wagster" className={classes.avatar}>
+               W
+             </Avatar>
+            }
+             action={
+              <IconButton aria-label="settings">
+                <MoreVertIcon />
+              </IconButton>
+            }
+            title="Wagster"
+          />
+          <CardMedia
+            className={classes.media}
+            image={resolveAPIImage(data.data.picture.url)}
+            title="Dog"
+          />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {data.data.dog_name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {data.data.biography}
+              </Typography>
+            </CardContent>
+          </CardActionArea>
+          <CardActions>
+            <IconButton aria-label="not interested">
+              <CancelIcon />
+            </IconButton>
+            <IconButton aria-label="add to favorites">
+              <PetsIcon />
+            </IconButton>
+          </CardActions>
         </Card>
-    );
-}
+      );
+    }
 
-export default Profile;
+
+
