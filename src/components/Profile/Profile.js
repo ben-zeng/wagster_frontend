@@ -109,8 +109,6 @@ export default function Profile() {
           console.error(error);
         }
       });
-
-    console.log(data)
   }, []);
 
   if (data === null) {
@@ -152,15 +150,17 @@ export default function Profile() {
         />
         <CardMedia
           className={classes.media}
-          image={data.data.image.url}
+          image={resolveAPIImage(data.data.picture.url)}
           title="Dog"
+
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {data.data.dog_name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {data.data.biography}
+            {/*{data.data.biography}*/}
+            {resolveAPIImage(data.data.picture.url)}
           </Typography>
         </CardContent>
       </CardActionArea>
