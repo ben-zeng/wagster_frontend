@@ -14,7 +14,10 @@ import Typography from '@material-ui/core/Typography';
 import { yellow } from '@material-ui/core/colors';
 import PetsIcon from '@material-ui/icons/Pets';
 import CancelIcon from '@material-ui/icons/Cancel';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
+import Grid from '@material-ui/core/Grid';
 import Axios from "axios";
 import { resolveAPIEndpoint, resolveAPIImage } from '../../helpers/APIResolveHelper';
 import { useGlobalState } from '../../helpers/GlobalState';
@@ -29,6 +32,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+  },
+  action: {
+    fontSize: 10
   },
   media: {
     height: 0,
@@ -46,8 +52,11 @@ const useStyles = makeStyles(theme => ({
   },
   avatar: {
     backgroundColor: yellow[300],
-    fontStyle: 'bold',
     fontFamily: 'Raleway',
+    width: 50,
+    height: 50,
+    margin: theme.spacing(1),  
+    backgroundColor: theme.palette.secondary.main,
   },
 }));
 
@@ -57,7 +66,7 @@ const errorIs404 = (error) => {
 };
 
 export default function Profile() {
-  const [ currentUser ] = useGlobalState("currentUser");
+  const [ currentUser, setCurrentUser ] = useGlobalState("currentUser");
   const history = useHistory();
 
   if (!currentUser.isLoggedIn) {
@@ -67,6 +76,29 @@ export default function Profile() {
   const [data, setData] = useState(null);
 
   const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = event => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const handleLogout = (event) => {
+    event.preventDefault();
+
+    handleClose();
+
+    setCurrentUser({
+        userId: null,
+        jsonWebToken: null,
+        isLoggedIn: false
+    });
+
+    history.push("/login")
+  };
 
   useEffect(() => {
     if (!currentUser.isLoggedIn) {
@@ -89,27 +121,35 @@ export default function Profile() {
 
   return (
     <Card className={classes.card}>
-      <Button
-        component={Link} to="/profile/update"
-        type="submit"
-        fullWidth
-        color="primary"
-      >
-        Update Profile
-      </Button>
+
       <CardActionArea>
         <CardHeader
           avatar={
+            <Grid container justify="center" alignItems="center">
             <Avatar aria-label="wagster" className={classes.avatar}>
               W
              </Avatar>
+             </Grid>
           }
           action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
+            <div>
+            <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
+              <MoreVertIcon/> 
             </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleClose}
+            >
+            <MenuItem component={Link} to="/profile" onClick={handleClose}>My Profile</MenuItem>
+            <MenuItem component={Link} to="/profile/update" onClick={handleClose}>Edit Profile</MenuItem>
+            <MenuItem component={Link} to="/profile" onClick={handleClose}>Matches</MenuItem>
+            <MenuItem onClick={handleLogout}>Logout</MenuItem>
+          </Menu>
+          </div>
           }
-          title="Wagster"
         />
         <CardMedia
           className={classes.media}
@@ -136,6 +176,3 @@ export default function Profile() {
     </Card>
   );
 }
-
-
-
