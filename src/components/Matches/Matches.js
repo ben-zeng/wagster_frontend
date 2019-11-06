@@ -5,14 +5,11 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { yellow } from '@material-ui/core/colors';
-import PetsIcon from '@material-ui/icons/Pets';
-import CancelIcon from '@material-ui/icons/Cancel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -58,7 +55,7 @@ export default function Matches() {
     history.push("/login");
   }
 
-  const [data, setData] = useState(null);
+  const [data] = useState(null);
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -70,26 +67,6 @@ export default function Matches() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const handleReject = () => {
-      let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/reject`)
-      Axios.post(url, {
-        profile: 2 // TODO fix this so it is not hard coded
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
-  };
-
-  const handleAccept = () => {
-    let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/accept`)
-    Axios.post(url, {
-        profile: 2 // TODO fix this so it is not hard coded
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
-};
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -106,19 +83,17 @@ export default function Matches() {
   };
 
   useEffect(() => {
-    let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/match_show`)
-
     if (!currentUser.isLoggedIn) {
       return;
     }
-    Axios.get(url)
+    Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}/match_show`))
       .then(function (response) {
           console.log(response.data[0].picture.url);
       })
       .catch(function (error) { 
        console.log(error);
       });
-  }, []);
+  }, [currentUser]);
 
   if (data === null) {
     return <p>Loading profile...</p>;
@@ -171,14 +146,6 @@ export default function Matches() {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        <IconButton component={Link} to="/profile" onClick={handleReject}>
-          <CancelIcon />
-        </IconButton>
-        <IconButton component={Link} to="/profile" onClick={handleAccept}>
-          <PetsIcon />
-        </IconButton>
-      </CardActions>
     </Card>
   );
 }

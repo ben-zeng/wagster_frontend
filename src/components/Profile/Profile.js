@@ -5,7 +5,6 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import CardActionArea from '@material-ui/core/CardActionArea';
-import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
@@ -101,17 +100,14 @@ export default function Profile() {
           console.error(error);
         }
       });
-  }, []);
-
-  if (data === null) {
-    return <p>Loading profile...</p>;
-  }
+  }, [currentUser, history]);
 
   return (
     <Card className={classes.card}>
 
       <CardActionArea>
         <CardHeader
+          title="My Profile"
           avatar={
             <Grid container justify="center" alignItems="center">
             <Avatar aria-label="wagster" className={classes.avatar}>
@@ -140,19 +136,24 @@ export default function Profile() {
           </div>
           }
         />
-        <CardMedia
-          className={classes.media}
-          image={resolveAPIImage(data.data.picture.url)}
-          title="Dog"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {data.data.dog_name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {data.data.biography}
-          </Typography>
-        </CardContent>
+        {!data && <CardContent><p>Loading profile...</p></CardContent>}
+        {data &&
+          <>
+            <CardMedia
+              className={classes.media}
+              image={resolveAPIImage(data.data.picture.url)}
+              title="Dog"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {data.data.dog_name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {data.data.biography}
+              </Typography>
+            </CardContent>
+          </>
+        }
       </CardActionArea>
     </Card>
   );

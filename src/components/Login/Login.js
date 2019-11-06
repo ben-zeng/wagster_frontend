@@ -45,9 +45,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function Login() {
-    const [currentUser, setCurrentUser] = useGlobalState("currentUser");
-    
-    console.log({ currentUser })
+    const [, setCurrentUser] = useGlobalState("currentUser");
 
     let history = useHistory();
 

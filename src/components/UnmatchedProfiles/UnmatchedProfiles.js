@@ -135,9 +135,8 @@ export default function UnmatchedProfiles() {
     if (!currentUser.isLoggedIn) {
       return;
     }
-
     getProfiles();
-  }, []);
+  }, [currentUser]); // , getProfiles
 
   let currentProfile = null;
   if (profiles && profiles.length > 0) {
@@ -149,6 +148,7 @@ export default function UnmatchedProfiles() {
 
       <CardActionArea>
         <CardHeader
+          title="Get Matching!"
           avatar={
             <Grid container justify="center" alignItems="center">
             <Avatar aria-label="wagster" className={classes.avatar}>
@@ -212,10 +212,10 @@ export default function UnmatchedProfiles() {
       {currentProfile &&
         <CardActions>
           <IconButton onClick={() => handleReject(currentProfile.id)}>
-            <CancelIcon />
+            <CancelIcon fontSize="large" />
           </IconButton>
           <IconButton onClick={() => handleAccept(currentProfile.id)}>
-            <PetsIcon />
+            <PetsIcon fontSize="large" />
           </IconButton>
         </CardActions>
       }

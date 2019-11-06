@@ -81,7 +81,7 @@ export default function CreateProfile() {
                 console.error(error);
             }
           })
-      }, []);
+      }, [currentUser, history]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
