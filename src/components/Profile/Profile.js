@@ -26,14 +26,11 @@ const useStyles = makeStyles(theme => ({
     },
   },
   card: {
-    maxWidth: 345,
-    'margin-left': '35%',
     justifyContent: 'center',
-    width: "90%",
-    marginTop: theme.spacing(8),
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
+    flexGrow: 1
   },
   action: {
     fontSize: 10
@@ -41,16 +38,6 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
-  },
-  expand: {
-    transform: 'rotate(0deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  },
-  expandOpen: {
-    transform: 'rotate(180deg)',
   },
   avatar: {
     backgroundColor: yellow[300],
@@ -167,9 +154,6 @@ export default function Profile() {
           </Typography>
         </CardContent>
       </CardActionArea>
-      <CardActions>
-        {/* TODO : logo?  */}
-      </CardActions>
     </Card>
   );
 }

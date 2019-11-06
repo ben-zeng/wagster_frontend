@@ -18,16 +18,13 @@ const useStyles = makeStyles(theme => ({
             background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
         },
       },
-        card: {
-            maxWidth: 345,
-            'margin-left': '35%',
-            justifyContent: 'center',
-            width: "90%",
-            marginTop: theme.spacing(8),
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-          },
+      card: {
+        justifyContent: 'center',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        flexGrow: 1
+      },
         paper: {
             marginTop: theme.spacing(8),
             display: 'flex',
