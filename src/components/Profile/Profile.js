@@ -57,7 +57,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'Raleway',
     width: 50,
     height: 50,
-    margin: theme.spacing(1),  
+    margin: theme.spacing(1),
   },
 }));
 
@@ -135,7 +135,7 @@ export default function Profile() {
           action={
             <div>
             <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-              <MoreVertIcon/> 
+              <MoreVertIcon/>
             </IconButton>
             <Menu
               id="simple-menu"
@@ -157,13 +157,15 @@ export default function Profile() {
           className={classes.media}
           image={resolveAPIImage(data.data.picture.url)}
           title="Dog"
+
         />
         <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
             {data.data.dog_name}
           </Typography>
           <Typography variant="body2" color="textSecondary" component="p">
-            {data.data.biography}
+            {/*{data.data.biography}*/}
+            {resolveAPIImage(data.data.picture.url)}
           </Typography>
         </CardContent>
       </CardActionArea>
