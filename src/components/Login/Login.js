@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
-// import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import {makeStyles} from '@material-ui/core/styles';
@@ -14,26 +15,36 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white,
+            background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
         },
-    },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
-    },
-    form: {
-        width: '100%', // Fix IE 11 issue.
-        marginTop: theme.spacing(1),
-    },
-    submit: {
-        margin: theme.spacing(3, 0, 2),
-    },
+      },
+        card: {
+            maxWidth: 345,
+            'margin-left': '35%',
+            justifyContent: 'center',
+            width: "90%",
+            marginTop: theme.spacing(8),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          },
+        paper: {
+            marginTop: theme.spacing(8),
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+        },
+        avatar: {
+            margin: theme.spacing(1),
+            backgroundColor: theme.palette.secondary.main,
+        },
+        form: {
+            width: '100%', // Fix IE 11 issue.
+            marginTop: theme.spacing(1),
+        },
+        submit: {
+            margin: theme.spacing(3, 0, 2),
+        },
 }));
 
 export default function Login() {
@@ -69,6 +80,8 @@ export default function Login() {
     };
 
     return (
+        <Card className={classes.card}>
+            <CardActionArea>
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
             <div className={classes.paper}>
@@ -127,5 +140,7 @@ export default function Login() {
             </div>
 
         </Container>
+        </CardActionArea>
+        </Card>
     );
 }

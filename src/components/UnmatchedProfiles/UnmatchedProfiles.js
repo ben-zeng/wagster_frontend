@@ -22,6 +22,11 @@ import { resolveAPIEndpoint, resolveAPIImage } from '../../helpers/APIResolveHel
 import { useGlobalState } from '../../helpers/GlobalState';
 
 const useStyles = makeStyles(theme => ({
+  '@global': {
+    body: {
+        background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+    },
+  },
   card: {
     maxWidth: 345,
     'margin-left': '35%',

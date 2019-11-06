@@ -16,7 +16,7 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white,
+            background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
         },
     },
     card: {

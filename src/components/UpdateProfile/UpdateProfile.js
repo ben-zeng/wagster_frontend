@@ -2,6 +2,8 @@ import React, {useEffect, useState} from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
@@ -14,9 +16,19 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
-            backgroundColor: theme.palette.common.white,
+            background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
         },
-    },
+      },
+      card: {
+        maxWidth: 345,
+        'margin-left': '35%',
+        justifyContent: 'center',
+        width: "90%",
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -115,56 +127,61 @@ export default function UpdateProfile() {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
+        <Card className={classes.card}>
 
-            <div className={classes.paper}>
+            <CardActionArea>
+                <Container component="main" maxWidth="xs">
+                <CssBaseline />
 
-                <Typography component="h1" variant="h5">
-                    Update Profile
-                </Typography>
+                <div className={classes.paper}>
 
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="dog_name"
-                        value={dogName}
-                        name="dog_name"
-                        onChange={event => setDogName(event.target.value)}
-                    />
+                    <Typography component="h1" variant="h5">
+                        Update Profile
+                    </Typography>
 
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="biography"
-                        value={biography}
-                        id="biography"
-                        multiline
-                        rows="4"
-                        onChange={event => setBiography(event.target.value)}
-                    />
+                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="dog_name"
+                            value={dogName}
+                            name="dog_name"
+                            onChange={event => setDogName(event.target.value)}
+                        />
 
-                    <Avatar alt="{dogName}" src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="biography"
+                            value={biography}
+                            id="biography"
+                            multiline
+                            rows="4"
+                            onChange={event => setBiography(event.target.value)}
+                        />
 
-                    <input type="file" onChange={event => setPicture(event.target.files[0])}/>
+                        <Avatar alt="{dogName}" src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Update Profile!
-                    </Button>
+                        <input type="file" onChange={event => setPicture(event.target.files[0])}/>
 
-                </form>
-            </div>
-        </Container>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Update Profile!
+                        </Button>
+
+                    </form>
+                </div>
+            </Container>
+        </CardActionArea>
+        </Card>
     );
 }
