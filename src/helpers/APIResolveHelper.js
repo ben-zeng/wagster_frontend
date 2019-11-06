@@ -12,7 +12,7 @@ export function resolveAPIEndpoint(endpoint) {
 
 export function resolveAPIImage(imagePath) {
     if (process.env.NODE_ENV === 'production') {
-        return `${API_HOST_PRODUCTION}${imagePath}`;
+        return `${imagePath}`;
     }
     else {
         return `${API_HOST_DEVELOPMENT}${imagePath}`;
