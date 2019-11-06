@@ -11,6 +11,8 @@ import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { yellow } from '@material-ui/core/colors';
+import PetsIcon from '@material-ui/icons/Pets';
+import CancelIcon from '@material-ui/icons/Cancel';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -82,6 +84,26 @@ export default function Profile() {
     setAnchorEl(null);
   };
 
+  const handleReject = () => {
+      let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/reject`)
+      Axios.post(url, {
+        profile: 2 // TODO fix this so it is not hard coded
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+  };
+
+  const handleAccept = () => {
+    let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/accept`)
+    Axios.post(url, {
+        profile: 2 // TODO fix this so it is not hard coded
+    })
+    .catch(function (error) {
+      console.log(error);
+    })
+};
+
   const handleLogout = (event) => {
     event.preventDefault();
 
@@ -97,17 +119,17 @@ export default function Profile() {
   };
 
   useEffect(() => {
+    let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/profiles_get`)
+
     if (!currentUser.isLoggedIn) {
       return;
     }
-    Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}`))
-      .then(response => setData(response))
-      .catch(error => {
-        if (errorIs404(error)) {
-          history.push("/profile/create");
-        } else {
-          console.error(error);
-        }
+    Axios.get(url)
+      .then(function (response) {
+          console.log(response.data[0].picture.url);
+      })
+      .catch(function (error) { 
+       console.log(error);
       });
   }, []);
 
@@ -142,7 +164,6 @@ export default function Profile() {
             <MenuItem component={Link} to="/profile" onClick={handleClose}>My Profile</MenuItem>
             <MenuItem component={Link} to="/profile/update" onClick={handleClose}>Edit Profile</MenuItem>
             <MenuItem component={Link} to="/profile" onClick={handleClose}>Matches</MenuItem>
-            <MenuItem component={Link} to="/profile/view" onClick={handleClose}>Get Matching!</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
           </div>
@@ -150,7 +171,7 @@ export default function Profile() {
         />
         <CardMedia
           className={classes.media}
-          image={resolveAPIImage(data.data.picture.url)}
+          image={resolveAPIImage(data.data[0].picture.url)}
           title="Dog"
         />
         <CardContent>
@@ -163,7 +184,12 @@ export default function Profile() {
         </CardContent>
       </CardActionArea>
       <CardActions>
-        {/* TODO : logo?  */}
+        <IconButton component={Link} to="/profile" onClick={handleReject}>
+          <CancelIcon />
+        </IconButton>
+        <IconButton component={Link} to="/profile" onClick={handleAccept}>
+          <PetsIcon />
+        </IconButton>
       </CardActions>
     </Card>
   );

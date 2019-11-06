@@ -48,8 +48,8 @@ export default function SignIn() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (evt) => {
-        evt.preventDefault();
+    const handleSubmit = (event) => {
+        event.preventDefault();
 
         const userData = {
             user: { email, password }
