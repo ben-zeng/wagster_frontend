@@ -6,7 +6,7 @@ const initialState = {
     currentUser: {
         jsonWebToken: null,
         isLoggedIn: false,
-        userId: null
+        userId: null,
     }
 };
 
