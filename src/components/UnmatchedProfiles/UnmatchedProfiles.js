@@ -63,12 +63,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const errorIs404 = (error) => {
-  return error.response &&
-    error.response.status === 404;
-};
-
-export default function Profile() {
+export default function UnmatchedProfiles() {
   const [ currentUser, setCurrentUser ] = useGlobalState("currentUser");
   const history = useHistory();
 
@@ -76,7 +71,8 @@ export default function Profile() {
     history.push("/login");
   }
 
-  const [data, setData] = useState(null);
+  const [profiles, setProfiles] = useState([]);
+  const [profilesToDisplay, setProfilesToDisplay] = useState(true);
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -89,25 +85,37 @@ export default function Profile() {
     setAnchorEl(null);
   };
 
-  const handleReject = () => {
-      let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/reject`)
-      Axios.post(url, {
-        profile: 2 // TODO fix this so it is not hard coded
-      })
-      .catch(function (error) {
-        console.log(error);
-      })
+  const removeCurrentProfile = () => {
+    const profilesCopy = profiles.filter((profile, index) => {
+      return index !== 0;
+    });
+
+    setProfiles(profilesCopy);
+
+    if (profilesCopy.length === 0) {
+      getProfiles();
+    }
   };
 
-  const handleAccept = () => {
-    let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/accept`)
-    Axios.post(url, {
-        profile: 2 // TODO fix this so it is not hard coded
+  const handleReject = (profileId) => {
+    Axios.post(resolveAPIEndpoint(`profiles/${currentUser.userId}/reject`), {
+      profile: profileId
     })
+    .then(removeCurrentProfile)
     .catch(function (error) {
       console.log(error);
+    });
+  };
+
+  const handleAccept = (profileId) => {
+    Axios.post(resolveAPIEndpoint(`profiles/${currentUser.userId}/accept`), {
+        profile: profileId
     })
-};
+    .then(removeCurrentProfile)
+    .catch(function (error) {
+      console.log(error);
+    });
+  };
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -123,23 +131,30 @@ export default function Profile() {
     history.push("/login")
   };
 
-  useEffect(() => {
-    let url = resolveAPIEndpoint(`profiles/${currentUser.userId}/profiles_get`)
+  const getProfiles = () => {
+    return Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}/profiles_get`))
+      .then(response => {
+          if (response.data.length === 0) {
+            return setProfilesToDisplay(false);
+          }
+          setProfiles(response.data);
+      })
+      .catch(function (error) { 
+        console.log(error);
+      });
+  };
 
+  useEffect(() => {
     if (!currentUser.isLoggedIn) {
       return;
     }
-    Axios.get(url)
-      .then(function (response) {
-          console.log(response.data[0].picture.url);
-      })
-      .catch(function (error) { 
-       console.log(error);
-      });
+
+    getProfiles();
   }, []);
 
-  if (data === null) {
-    return <p>Loading profile...</p>;
+  let currentProfile = null;
+  if (profiles && profiles.length > 0) {
+    currentProfile = profiles[0];
   }
 
   return (
@@ -168,34 +183,55 @@ export default function Profile() {
             >
             <MenuItem component={Link} to="/profile" onClick={handleClose}>My Profile</MenuItem>
             <MenuItem component={Link} to="/profile/update" onClick={handleClose}>Edit Profile</MenuItem>
-            <MenuItem component={Link} to="/profile" onClick={handleClose}>Matches</MenuItem>
+            <MenuItem component={Link} to="/matches" onClick={handleClose}>Matches</MenuItem>
+            <MenuItem component={Link} to="/matching" onClick={handleClose}>Get Matching!</MenuItem>
             <MenuItem onClick={handleLogout}>Logout</MenuItem>
           </Menu>
           </div>
           }
         />
-        <CardMedia
-          className={classes.media}
-          image={resolveAPIImage(data.data[0].picture.url)}
-          title="Dog"
-        />
-        <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
-            {data.data.dog_name}
-          </Typography>
-          <Typography variant="body2" color="textSecondary" component="p">
-            {data.data.biography}
-          </Typography>
-        </CardContent>
+
+        {!profilesToDisplay &&
+          <CardContent>
+            <p>No new profiles, come back later!</p>
+          </CardContent>
+        }
+
+        {profilesToDisplay && !currentProfile && 
+          <CardContent>
+            <p>Loading profile...</p>
+          </CardContent>
+        }
+
+        {currentProfile &&
+          <>
+            <CardMedia
+              className={classes.media}
+              image={resolveAPIImage(currentProfile.picture.url)}
+              title="Dog"
+            />
+            <CardContent>
+              <Typography gutterBottom variant="h5" component="h2">
+                {currentProfile.dog_name}
+              </Typography>
+              <Typography variant="body2" color="textSecondary" component="p">
+                {currentProfile.biography}
+              </Typography>
+            </CardContent>
+          </>
+        }
+
       </CardActionArea>
-      <CardActions>
-        <IconButton component={Link} to="/profile" onClick={handleReject}>
-          <CancelIcon />
-        </IconButton>
-        <IconButton component={Link} to="/profile" onClick={handleAccept}>
-          <PetsIcon />
-        </IconButton>
-      </CardActions>
+      {currentProfile &&
+        <CardActions>
+          <IconButton onClick={() => handleReject(currentProfile.id)}>
+            <CancelIcon />
+          </IconButton>
+          <IconButton onClick={() => handleAccept(currentProfile.id)}>
+            <PetsIcon />
+          </IconButton>
+        </CardActions>
+      }
     </Card>
   );
 }

@@ -22,9 +22,9 @@ function App() {
                     <Route path="/login" component={Login} />
                     <Route path="/signup" component={SignUp} />
                     <Route path="/profile/create" exact component={CreateProfile} />
-                    <Route path="/profile/view" exact component={UnmatchedProfiles} />
+                    <Route path="/matching" exact component={UnmatchedProfiles} />
                     <Route path="/profile/update" exact component={UpdateProfile} />
-                    <Route path="/profile/match" exact component={Matches} />
+                    <Route path="/matches" exact component={Matches} />
                     </Switch>
 
                 </div>
