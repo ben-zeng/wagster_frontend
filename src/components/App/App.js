@@ -6,6 +6,7 @@ import SignUp from '../SignUp/SignUp';
 import Profile from '../Profile/Profile';
 import CreateProfile from '../CreateProfile/CreateProfile';
 import UnmatchedProfiles from '../UnmatchedProfiles/UnmatchedProfiles';
+import Matches from '../Matches/Matches';
 import UpdateProfile from '../UpdateProfile/UpdateProfile';
 import { GlobalStateProvider } from '../../helpers/GlobalState';
 
@@ -23,6 +24,7 @@ function App() {
                     <Route path="/profile/create" exact component={CreateProfile} />
                     <Route path="/profile/view" exact component={UnmatchedProfiles} />
                     <Route path="/profile/update" exact component={UpdateProfile} />
+                    <Route path="/profile/match" exact component={Matches} />
                     </Switch>
 
                 </div>
