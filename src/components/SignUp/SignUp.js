@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
@@ -17,6 +19,16 @@ const useStyles = makeStyles(theme => ({
             backgroundColor: theme.palette.common.white,
         },
     },
+    card: {
+        maxWidth: 345,
+        'margin-left': '35%',
+        justifyContent: 'center',
+        width: "90%",
+        marginTop: theme.spacing(8),
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+      },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -71,63 +83,68 @@ export default function SignIn() {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
+        <Card className={classes.card}>
+            <CardActionArea>
 
-            <div className={classes.paper}>
+                <Container component="main" maxWidth="xs">
+                    <CssBaseline />
 
-                <Typography component="h1" variant="h5">
-                    Register
-                </Typography>
+                    <div className={classes.paper}>
 
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        autoComplete="email"
-                        autoFocus
-                        onChange={e => setEmail(e.target.value)}
-                    />
+                        <Typography component="h1" variant="h5">
+                            Register
+                        </Typography>
 
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="password"
-                        label="Password"
-                        type="password"
-                        id="password"
-                        autoComplete="current-password"
-                        onChange={e => setPassword(e.target.value)}
-                    />
+                        <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                id="email"
+                                label="Email Address"
+                                name="email"
+                                autoComplete="email"
+                                autoFocus
+                                onChange={e => setEmail(e.target.value)}
+                            />
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Sign Up!
-                    </Button>
+                            <TextField
+                                variant="outlined"
+                                margin="normal"
+                                required
+                                fullWidth
+                                name="password"
+                                label="Password"
+                                type="password"
+                                id="password"
+                                autoComplete="current-password"
+                                onChange={e => setPassword(e.target.value)}
+                            />
 
-                    <Button
-                        component={Link} to="/login"
-                        type="submit"
-                        fullWidth
-                        color="primary"
-                    >
-                        Back
-                    </Button>
+                            <Button
+                                type="submit"
+                                fullWidth
+                                variant="contained"
+                                color="primary"
+                                className={classes.submit}
+                            >
+                                Sign Up!
+                            </Button>
 
-                </form>
-            </div>
-        </Container>
+                            <Button
+                                component={Link} to="/login"
+                                type="submit"
+                                fullWidth
+                                color="primary"
+                            >
+                                Back
+                            </Button>
+
+                        </form>
+                    </div>
+                </Container>
+            </CardActionArea>
+        </Card>
     );
 }
