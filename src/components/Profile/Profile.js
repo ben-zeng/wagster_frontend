@@ -109,6 +109,8 @@ export default function Profile() {
           console.error(error);
         }
       });
+
+    console.log(data)
   }, []);
 
   if (data === null) {
