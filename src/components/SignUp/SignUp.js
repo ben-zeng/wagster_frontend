@@ -80,17 +80,18 @@ export default function SignIn() {
                 <Avatar src="/images/wagster-logo.png" className={classes.wagsterLogoLarge} />
             </Grid>
             <Container component="main" maxWidth="xs">
-                <Typography align="center" component="h1" variant="h5">
+                <Typography component="h1" variant="h5">
                     Register
                 </Typography>
 
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                <form className={classes.form} onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
                         required
                         fullWidth
                         id="email"
+                        type="email"
                         label="Email Address"
                         name="email"
                         autoComplete="email"
@@ -129,6 +130,7 @@ export default function SignIn() {
                     >
                         Back
                     </Button>
+
                 </form>
             </Container>
         </Card>
