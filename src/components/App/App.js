@@ -21,7 +21,7 @@ function App() {
                         <Route path="/login" component={Login} />
                         <Route path="/signup" component={SignUp} />
                         <Route path="/profile/create" exact component={CreateProfile} />
-                        <Route path="/matching" exact component={UnmatchedProfiles} />
+                        <Route path="/" exact component={UnmatchedProfiles} />
                         <Route path="/profile/update" exact component={UpdateProfile} />
                         <Route path="/matches" exact component={Matches} />
                     </Switch>
