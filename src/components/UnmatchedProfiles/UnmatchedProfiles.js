@@ -27,7 +27,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   card: {
-    flex: 1
+    flex: 1,
+    overflow: 'auto',
+    margin: '5%'
   },
   cardActions: {
     justifyContent: 'center'
@@ -39,8 +41,6 @@ const useStyles = makeStyles(theme => ({
     fontSize: 10
   },
   media: {
-    // height: 0,
-    // paddingTop: '56.25%', // 16:9
     height: 350,
     width: '100%',
     objectFit: 'cover'
