@@ -126,7 +126,7 @@ export default function Profile() {
               <MenuItem component={Link} to="/profile" onClick={handleClose}>My Profile</MenuItem>
               <MenuItem component={Link} to="/profile/update" onClick={handleClose}>Edit Profile</MenuItem>
               <MenuItem component={Link} to="/matches" onClick={handleClose}>Matches</MenuItem>
-              <MenuItem component={Link} to="/matching" onClick={handleClose}>Get Matching!</MenuItem>
+              <MenuItem component={Link} to="/" onClick={handleClose}>Get Matching!</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
           </div>
