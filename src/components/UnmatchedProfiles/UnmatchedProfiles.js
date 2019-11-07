@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -24,15 +23,17 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
-        background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+      background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
     },
   },
   card: {
-    justifyContent: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flexGrow: 1
+    flex: 1
+  },
+  cardActions: {
+    justifyContent: 'center'
+  },
+  largeButton: {
+    fontSize: '4.5rem'
   },
   action: {
     fontSize: 10
@@ -46,12 +47,12 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'Raleway',
     width: 50,
     height: 50,
-    margin: theme.spacing(1),  
+    margin: theme.spacing(1),
   },
 }));
 
 export default function UnmatchedProfiles() {
-  const [ currentUser, setCurrentUser ] = useGlobalState("currentUser");
+  const [currentUser, setCurrentUser] = useGlobalState("currentUser");
   const history = useHistory();
 
   if (!currentUser.isLoggedIn) {
@@ -88,20 +89,20 @@ export default function UnmatchedProfiles() {
     Axios.post(resolveAPIEndpoint(`profiles/${currentUser.userId}/reject`), {
       profile: profileId
     })
-    .then(removeCurrentProfile)
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then(removeCurrentProfile)
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleAccept = (profileId) => {
     Axios.post(resolveAPIEndpoint(`profiles/${currentUser.userId}/accept`), {
-        profile: profileId
+      profile: profileId
     })
-    .then(removeCurrentProfile)
-    .catch(function (error) {
-      console.log(error);
-    });
+      .then(removeCurrentProfile)
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   const handleLogout = (event) => {
@@ -110,9 +111,9 @@ export default function UnmatchedProfiles() {
     handleClose();
 
     setCurrentUser({
-        userId: null,
-        jsonWebToken: null,
-        isLoggedIn: false
+      userId: null,
+      jsonWebToken: null,
+      isLoggedIn: false
     });
 
     history.push("/login")
@@ -121,12 +122,12 @@ export default function UnmatchedProfiles() {
   const getProfiles = () => {
     return Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}/profiles_get`))
       .then(response => {
-          if (response.data.length === 0) {
-            return setProfilesToDisplay(false);
-          }
-          setProfiles(response.data);
+        if (response.data.length === 0) {
+          return setProfilesToDisplay(false);
+        }
+        setProfiles(response.data);
       })
-      .catch(function (error) { 
+      .catch(function (error) {
         console.log(error);
       });
   };
@@ -145,21 +146,19 @@ export default function UnmatchedProfiles() {
 
   return (
     <Card className={classes.card}>
-
-      <CardActionArea>
-        <CardHeader
-          title="Get Matching!"
-          avatar={
-            <Grid container justify="center" alignItems="center">
+      <CardHeader
+        title="Get Matching!"
+        avatar={
+          <Grid container justify="center" alignItems="center">
             <Avatar aria-label="wagster" className={classes.avatar}>
               W
              </Avatar>
-             </Grid>
-          }
-          action={
-            <div>
+          </Grid>
+        }
+        action={
+          <div>
             <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-              <MoreVertIcon/> 
+              <MoreVertIcon />
             </IconButton>
             <Menu
               id="simple-menu"
@@ -168,56 +167,52 @@ export default function UnmatchedProfiles() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-            <MenuItem component={Link} to="/profile" onClick={handleClose}>My Profile</MenuItem>
-            <MenuItem component={Link} to="/profile/update" onClick={handleClose}>Edit Profile</MenuItem>
-            <MenuItem component={Link} to="/matches" onClick={handleClose}>Matches</MenuItem>
-            <MenuItem component={Link} to="/matching" onClick={handleClose}>Get Matching!</MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-          </Menu>
+              <MenuItem component={Link} to="/profile" onClick={handleClose}>My Profile</MenuItem>
+              <MenuItem component={Link} to="/profile/update" onClick={handleClose}>Edit Profile</MenuItem>
+              <MenuItem component={Link} to="/matches" onClick={handleClose}>Matches</MenuItem>
+              <MenuItem component={Link} to="/matching" onClick={handleClose}>Get Matching!</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </div>
-          }
-        />
-
-        {!profilesToDisplay &&
-          <CardContent>
-            <p>No new profiles, come back later!</p>
-          </CardContent>
         }
+      />
 
-        {profilesToDisplay && !currentProfile && 
-          <CardContent>
-            <p>Loading profile...</p>
-          </CardContent>
-        }
+      {!profilesToDisplay &&
+        <CardContent>
+          <p>No new profiles, come back later!</p>
+        </CardContent>
+      }
 
-        {currentProfile &&
-          <>
-            <CardMedia
-              className={classes.media}
-              image={resolveAPIImage(currentProfile.picture.url)}
-              title="Dog"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {currentProfile.dog_name}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {currentProfile.biography}
-              </Typography>
-            </CardContent>
-          </>
-        }
+      {profilesToDisplay && !currentProfile &&
+        <CardContent>
+          <p>Loading profile...</p>
+        </CardContent>
+      }
 
-      </CardActionArea>
       {currentProfile &&
-        <CardActions>
-          <IconButton onClick={() => handleReject(currentProfile.id)}>
-            <CancelIcon fontSize="large" />
-          </IconButton>
-          <IconButton onClick={() => handleAccept(currentProfile.id)}>
-            <PetsIcon fontSize="large" />
-          </IconButton>
-        </CardActions>
+        <>
+          <CardMedia
+            className={classes.media}
+            image={resolveAPIImage(currentProfile.picture.url)}
+            title="Dog"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {currentProfile.dog_name}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {currentProfile.biography}
+            </Typography>
+          </CardContent>
+          <CardActions className={classes.cardActions}>
+            <IconButton onClick={() => handleReject(currentProfile.id)}>
+              <CancelIcon className={classes.largeButton} />
+            </IconButton>
+            <IconButton onClick={() => handleAccept(currentProfile.id)}>
+              <PetsIcon className={classes.largeButton} />
+            </IconButton>
+          </CardActions>
+        </>
       }
     </Card>
   );

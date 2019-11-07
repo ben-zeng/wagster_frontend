@@ -4,7 +4,6 @@ import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
@@ -25,11 +24,7 @@ const useStyles = makeStyles(theme => ({
     },
   },
   card: {
-    justifyContent: 'center',
-    display: 'flex',
-    flexDirection: 'column',
-    alignItems: 'center',
-    flexGrow: 1
+    flex: 1
   },
   action: {
     fontSize: 10
@@ -43,7 +38,7 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'Raleway',
     width: 50,
     height: 50,
-    margin: theme.spacing(1),  
+    margin: theme.spacing(1),
   },
 }));
 
@@ -53,7 +48,7 @@ const errorIs404 = (error) => {
 };
 
 export default function Profile() {
-  const [ currentUser, setCurrentUser ] = useGlobalState("currentUser");
+  const [currentUser, setCurrentUser] = useGlobalState("currentUser");
   const history = useHistory();
 
   if (!currentUser.isLoggedIn) {
@@ -79,9 +74,9 @@ export default function Profile() {
     handleClose();
 
     setCurrentUser({
-        userId: null,
-        jsonWebToken: null,
-        isLoggedIn: false
+      userId: null,
+      jsonWebToken: null,
+      isLoggedIn: false
     });
 
     history.push("/login")
@@ -104,21 +99,19 @@ export default function Profile() {
 
   return (
     <Card className={classes.card}>
-
-      <CardActionArea>
-        <CardHeader
-          title="My Profile"
-          avatar={
-            <Grid container justify="center" alignItems="center">
+      <CardHeader
+        title="My Profile"
+        avatar={
+          <Grid container justify="center" alignItems="center">
             <Avatar aria-label="wagster" className={classes.avatar}>
               W
              </Avatar>
-             </Grid>
-          }
-          action={
-            <div>
+          </Grid>
+        }
+        action={
+          <div>
             <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-              <MoreVertIcon/> 
+              <MoreVertIcon />
             </IconButton>
             <Menu
               id="simple-menu"
@@ -127,34 +120,33 @@ export default function Profile() {
               open={Boolean(anchorEl)}
               onClose={handleClose}
             >
-            <MenuItem component={Link} to="/profile" onClick={handleClose}>My Profile</MenuItem>
-            <MenuItem component={Link} to="/profile/update" onClick={handleClose}>Edit Profile</MenuItem>
-            <MenuItem component={Link} to="/matches" onClick={handleClose}>Matches</MenuItem>
-            <MenuItem component={Link} to="/matching" onClick={handleClose}>Get Matching!</MenuItem>
-            <MenuItem onClick={handleLogout}>Logout</MenuItem>
-          </Menu>
+              <MenuItem component={Link} to="/profile" onClick={handleClose}>My Profile</MenuItem>
+              <MenuItem component={Link} to="/profile/update" onClick={handleClose}>Edit Profile</MenuItem>
+              <MenuItem component={Link} to="/matches" onClick={handleClose}>Matches</MenuItem>
+              <MenuItem component={Link} to="/matching" onClick={handleClose}>Get Matching!</MenuItem>
+              <MenuItem onClick={handleLogout}>Logout</MenuItem>
+            </Menu>
           </div>
-          }
-        />
-        {!data && <CardContent><p>Loading profile...</p></CardContent>}
-        {data &&
-          <>
-            <CardMedia
-              className={classes.media}
-              image={resolveAPIImage(data.data.picture.url)}
-              title="Dog"
-            />
-            <CardContent>
-              <Typography gutterBottom variant="h5" component="h2">
-                {data.data.dog_name}
-              </Typography>
-              <Typography variant="body2" color="textSecondary" component="p">
-                {data.data.biography}
-              </Typography>
-            </CardContent>
-          </>
         }
-      </CardActionArea>
+      />
+      {!data && <CardContent><p>Loading profile...</p></CardContent>}
+      {data &&
+        <>
+          <CardMedia
+            className={classes.media}
+            image={resolveAPIImage(data.data.picture.url)}
+            title="Dog"
+          />
+          <CardContent>
+            <Typography gutterBottom variant="h5" component="h2">
+              {data.data.dog_name}
+            </Typography>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {data.data.biography}
+            </Typography>
+          </CardContent>
+        </>
+      }
     </Card>
   );
 }

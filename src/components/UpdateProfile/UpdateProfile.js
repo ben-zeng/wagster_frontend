@@ -3,7 +3,6 @@ import Axios from 'axios';
 import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import Grid from '@material-ui/core/Grid';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
@@ -21,11 +20,7 @@ const useStyles = makeStyles(theme => ({
         },
     },
     card: {
-        justifyContent: 'center',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        flexGrow: 1
+        flex: 1
     },
     paper: {
         display: 'flex',
@@ -132,21 +127,17 @@ export default function UpdateProfile() {
 
     return (
         <Card className={classes.card}>
-            <CardActionArea>
-                <CardHeader
-                    title="Edit Profile"
-                    avatar={
-                        <Grid container justify="center" alignItems="center">
-                            <Avatar aria-label="wagster" className={classes.avatar}>
-                                W
+            <CardHeader
+                title="Edit Profile"
+                avatar={
+                    <Grid container justify="center" alignItems="center">
+                        <Avatar aria-label="wagster" className={classes.avatar}>
+                            W
                     </Avatar>
-                        </Grid>
-                    }
-                />
-            </CardActionArea>
-
+                    </Grid>
+                }
+            />
             <CardContent>
-
                 <form className={classes.form} noValidate onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
