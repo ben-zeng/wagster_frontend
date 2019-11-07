@@ -66,7 +66,9 @@ export default function Login() {
 
             history.push("/profile");
         }).catch(error => {
-            alert(error)
+            if (error.response.status === 401) {
+                alert("Incorrect email or password!")
+            }
         })
     };
 

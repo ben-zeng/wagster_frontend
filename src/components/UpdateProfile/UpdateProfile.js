@@ -181,13 +181,14 @@ export default function UpdateProfile() {
             />
             <CardContent>
                 <Container component="main" maxWidth="xs">
-                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                    <form className={classes.form} onSubmit={handleSubmit}>
                         <TextField
                             variant="outlined"
                             margin="normal"
                             required
                             fullWidth
                             id="dog_name"
+                            label="Dog Name"
                             value={dogName}
                             name="dog_name"
                             onChange={event => setDogName(event.target.value)}
@@ -199,6 +200,7 @@ export default function UpdateProfile() {
                             required
                             fullWidth
                             name="biography"
+                            label="Biography"
                             value={biography}
                             id="biography"
                             multiline
