@@ -9,7 +9,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { yellow } from '@material-ui/core/colors';
 import PetsIcon from '@material-ui/icons/Pets';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Menu from '@material-ui/core/Menu';
@@ -23,7 +22,7 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
-      background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+        background: 'radial-gradient(circle at 49% 55%, #c5e1a5, #66bb6a)',
     },
   },
   card: {
@@ -40,14 +39,17 @@ const useStyles = makeStyles(theme => ({
   action: {
     fontSize: 10
   },
+  noProfilesHotdog: {
+    width: 120,
+    height: 120,
+    margin: theme.spacing(1),
+  },
   media: {
     height: 350,
     width: '100%',
     objectFit: 'cover'
   },
-  avatar: {
-    backgroundColor: yellow[300],
-    fontFamily: 'Raleway',
+  wagsterLogoSmall: {
     width: 50,
     height: 50,
     margin: theme.spacing(1),
@@ -150,18 +152,15 @@ export default function UnmatchedProfiles() {
   return (
     <Card className={classes.card}>
       <CardHeader
-        title="Get Matching!"
         avatar={
           <Grid container justify="center" alignItems="center">
-            <Avatar aria-label="wagster" className={classes.avatar}>
-              W
-             </Avatar>
+            <Avatar src="/images/wagster-logo.png" className={classes.wagsterLogoSmall} />
           </Grid>
         }
         action={
-          <div>
+          <Grid container justify="center" alignItems="center">
             <IconButton aria-controls="simple-menu" aria-haspopup="true" onClick={handleClick}>
-              <MoreVertIcon />
+              <MoreVertIcon fontSize="large" />
             </IconButton>
             <Menu
               id="simple-menu"
@@ -176,13 +175,19 @@ export default function UnmatchedProfiles() {
               <MenuItem component={Link} to="/" onClick={handleClose}>Get Matching!</MenuItem>
               <MenuItem onClick={handleLogout}>Logout</MenuItem>
             </Menu>
-          </div>
+          </Grid>
         }
       />
 
       {!profilesToDisplay &&
         <CardContent>
-          <p>No new profiles, come back later!</p>
+          <Grid container justify="center" alignItems="center">
+            <Avatar src="/images/no-profiles-hotdog.jpg" className={classes.noProfilesHotdog} />
+          </Grid>
+          <Typography variant="body1" align="center">Your next <strong>hot</strong> dog match...</Typography>
+          <Typography variant="body1" align="center">
+            Coming soon!
+          </Typography>
         </CardContent>
       }
 

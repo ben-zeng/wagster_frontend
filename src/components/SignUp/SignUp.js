@@ -1,35 +1,34 @@
 import React, { useState } from 'react';
-import Axios from 'axios';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Card from '@material-ui/core/Card';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
 import { Link, useHistory } from 'react-router-dom';
+import Axios from 'axios';
+
 import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
 import { useGlobalState } from '../../helpers/GlobalState';
 
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
+import TextField from '@material-ui/core/TextField';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
-            background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+            background: 'radial-gradient(circle at 49% 55%, #c5e1a5, #66bb6a)',
         },
     },
     card: {
-        flex: 1
+        flex: 1,
+        overflow: 'auto',
+        margin: '5%'
     },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+    wagsterLogoLarge: {
+        width: 200,
+        height: 200,
+        margin: theme.spacing(4),
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -41,10 +40,12 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function SignIn() {
-    const [, setCurrentUser] = useGlobalState("currentUser");
-
-
+    const [currentUser, setCurrentUser] = useGlobalState("currentUser");
     const history = useHistory();
+
+    if (currentUser.isLoggedIn) {
+        history.push("/profile");
+    }
 
     const classes = useStyles();
 
@@ -75,65 +76,62 @@ export default function SignIn() {
 
     return (
         <Card className={classes.card}>
-
+            <Grid container justify="center" alignItems="center">
+                <Avatar src="/images/wagster-logo.png" className={classes.wagsterLogoLarge} />
+            </Grid>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                <Typography component="h1" variant="h5">
+                    Register
+                </Typography>
 
-                <div className={classes.paper}>
+                <form className={classes.form} onSubmit={handleSubmit}>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="email"
+                        type="email"
+                        label="Email Address"
+                        name="email"
+                        autoComplete="email"
+                        autoFocus
+                        onChange={e => setEmail(e.target.value)}
+                    />
 
-                    <Typography component="h1" variant="h5">
-                        Register
-                        </Typography>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="password"
+                        label="Password"
+                        type="password"
+                        id="password"
+                        autoComplete="current-password"
+                        onChange={e => setPassword(e.target.value)}
+                    />
 
-                    <form className={classes.form}  onSubmit={handleSubmit}>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="email"
-                            type="email"
-                            label="Email Address"
-                            name="email"
-                            autoComplete="email"
-                            autoFocus
-                            onChange={e => setEmail(e.target.value)}
-                        />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Sign Up!
+                    </Button>
 
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="password"
-                            label="Password"
-                            type="password"
-                            id="password"
-                            autoComplete="current-password"
-                            onChange={e => setPassword(e.target.value)}
-                        />
+                    <Button
+                        component={Link} to="/login"
+                        type="submit"
+                        fullWidth
+                        color="primary"
+                    >
+                        Back
+                    </Button>
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Sign Up!
-                            </Button>
-
-                        <Button
-                            component={Link} to="/login"
-                            type="submit"
-                            fullWidth
-                            color="primary"
-                        >
-                            Back
-                            </Button>
-
-                    </form>
-                </div>
+                </form>
             </Container>
         </Card>
     );

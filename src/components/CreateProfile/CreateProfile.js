@@ -1,34 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useHistory } from 'react-router-dom';
 import Axios from 'axios';
+
+import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
+import { useGlobalState } from '../../helpers/GlobalState';
+
+import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
+import Container from '@material-ui/core/Container';
+import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import { useHistory } from 'react-router-dom'
-import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
-import { useGlobalState } from '../../helpers/GlobalState';
 
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
-            background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+            background: 'radial-gradient(circle at 49% 55%, #c5e1a5, #66bb6a)',
         },
     },
     card: {
-        flex: 1
+        flex: 1,
+        overflow: 'auto',
+        margin: '5%'
     },
-    paper: {
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-    },
-    avatar: {
-        margin: theme.spacing(1),
-        backgroundColor: theme.palette.secondary.main,
+    wagsterLogoLarge: {
+        width: 200,
+        height: 200,
+        margin: theme.spacing(4),
     },
     form: {
         width: '100%', // Fix IE 11 issue.
@@ -111,7 +111,7 @@ export default function CreateProfile() {
         ).then(result => {
             console.log(result.data);
 
-            history.push("/profile");
+            history.push("/");
         }).catch(error => {
             alert(error);
         });
@@ -119,56 +119,53 @@ export default function CreateProfile() {
 
     return (
         <Card className={classes.card}>
-
+            <Grid container justify="center" alignItems="center">
+                <Avatar src="/images/wagster-logo.png" className={classes.wagsterLogoLarge} />
+            </Grid>
             <Container component="main" maxWidth="xs">
-                <CssBaseline />
-
-                <div className={classes.paper}>
-
-                    <Typography component="h1" variant="h5">
-                        Create Profile
+                <Typography align="center" component="h1" variant="h5">
+                    Create Profile
                 </Typography>
 
-                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="dog_name"
-                            label="Dog Name"
-                            name="dog_name"
-                            autoFocus
-                            onChange={event => setDogName(event.target.value)}
-                        />
+                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="dog_name"
+                        label="Dog Name"
+                        name="dog_name"
+                        autoFocus
+                        onChange={event => setDogName(event.target.value)}
+                    />
 
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="biography"
-                            label="Biography"
-                            id="biography"
-                            multiline
-                            rows="4"
-                            onChange={event => setBiography(event.target.value)}
-                        />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="biography"
+                        label="Biography"
+                        id="biography"
+                        multiline
+                        rows="4"
+                        onChange={event => setBiography(event.target.value)}
+                    />
 
-                        <input type="file" onChange={event => setPicture(event.target.files[0])} />
+                    <input type="file" onChange={event => setPicture(event.target.files[0])} />
 
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Create Profile!
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Create Profile!
                     </Button>
 
-                    </form>
-                </div>
+                </form>
             </Container>
         </Card>
     )

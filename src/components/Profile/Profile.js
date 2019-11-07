@@ -8,7 +8,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { yellow } from '@material-ui/core/colors';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -20,7 +19,7 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
-      background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+        background: 'radial-gradient(circle at 49% 55%, #c5e1a5, #66bb6a)',
     },
   },
   card: {
@@ -28,17 +27,12 @@ const useStyles = makeStyles(theme => ({
     overflow: 'auto',
     margin: '5%'
   },
-  action: {
-    fontSize: 10
-  },
   media: {
     height: 350,
     width: '100%',
     objectFit: 'cover'
   },
-  avatar: {
-    backgroundColor: yellow[300],
-    fontFamily: 'Raleway',
+  wagsterLogoSmall: {
     width: 50,
     height: 50,
     margin: theme.spacing(1),
@@ -103,12 +97,11 @@ export default function Profile() {
   return (
     <Card className={classes.card}>
       <CardHeader
-        title="My Profile"
+        title={(data && data.data.dog_name)}
+        titleTypographyProps={{ variant: "h5" }}
         avatar={
           <Grid container justify="center" alignItems="center">
-            <Avatar aria-label="wagster" className={classes.avatar}>
-              W
-             </Avatar>
+            <Avatar src="/images/wagster-logo.png" className={classes.wagsterLogoSmall} />
           </Grid>
         }
         action={
@@ -141,9 +134,6 @@ export default function Profile() {
             title="Dog"
           />
           <CardContent>
-            <Typography gutterBottom variant="h5" component="h2">
-              {data.data.dog_name}
-            </Typography>
             <Typography variant="body2" color="textSecondary" component="p">
               {data.data.biography}
             </Typography>
