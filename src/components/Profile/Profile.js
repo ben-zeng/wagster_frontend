@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     fontSize: 10
   },
   media: {
-    height: 550,
+    height: 350,
     width: '100%',
     objectFit: 'cover'
   },
