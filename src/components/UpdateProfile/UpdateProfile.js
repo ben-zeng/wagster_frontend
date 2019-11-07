@@ -163,7 +163,7 @@ export default function UpdateProfile() {
                         onChange={event => setBiography(event.target.value)}
                     />
 
-                    <Avatar alt="{dogName}" src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
+                    <Avatar alt={dogName} src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
 
                     <input type="file" onChange={event => setPicture(event.target.files[0])} />
 
