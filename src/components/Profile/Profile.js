@@ -30,8 +30,9 @@ const useStyles = makeStyles(theme => ({
     fontSize: 10
   },
   media: {
-    height: 0,
-    paddingTop: '56.25%', // 16:9
+    height: 550,
+    width: '100%',
+    objectFit: 'cover'
   },
   avatar: {
     backgroundColor: yellow[300],
