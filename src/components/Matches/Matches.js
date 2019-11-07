@@ -5,7 +5,6 @@ import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
-import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
 import { yellow } from '@material-ui/core/colors';
@@ -40,6 +39,12 @@ const useStyles = makeStyles(theme => ({
     height: 50,
     margin: theme.spacing(1),
   },
+  bigAvatar: {
+    width: '4rem',
+    height: '4rem',
+    margin: theme.spacing(1),
+    backgroundColor: theme.palette.secondary.main,
+  },
 }));
 
 export default function Matches() {
@@ -50,7 +55,7 @@ export default function Matches() {
     history.push("/login");
   }
 
-  const [data] = useState(null);
+  const [matchedProfiles, setMatchedProfiles] = useState(null);
 
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -81,19 +86,29 @@ export default function Matches() {
     if (!currentUser.isLoggedIn) {
       return;
     }
-    // TODO: Fix: currentUser.userId should be the current user's profile ID
     Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}/match_show`))
       .then(function (response) {
+        const getAllProfiles = response.data.map(matchedProfileId => {
+          // TODO: Problem: We're passing profile ID, but backend is expecting user ID
+          return Axios.get(resolveAPIEndpoint(`profiles/${matchedProfileId}`))
+            .then(response => response.data);
+        });
 
-        console.log({ response });
+        Promise.all(getAllProfiles).then(profiles => {
+          setMatchedProfiles(profiles);
+        });
       })
       .catch(function (error) {
         console.log(error);
       });
   }, [currentUser]);
 
-  if (data === null) {
-    return <p>Loading profile...</p>;
+  if (matchedProfiles === null) {
+    return <p>Loading your matches...</p>;
+  }
+
+  if (matchedProfiles && matchedProfiles.length === 0) {
+    return <p>Sorry, no matches just yet. Check back soon!</p>;
   }
 
   return (
@@ -128,19 +143,19 @@ export default function Matches() {
         }
       />
 
-      <CardMedia
-        className={classes.media}
-        image={resolveAPIImage(data.data[0].picture.url)}
-        title="Dog"
-      />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="h2">
-          {data.data.dog_name}
-        </Typography>
-        <Typography variant="body2" color="textSecondary" component="p">
-          {data.data.biography}
-        </Typography>
+        {matchedProfiles.map(profile => {
+          return (
+            <div key={profile.id}>
+              <Avatar alt={profile.dog_name} src={resolveAPIImage(profile.picture.url)} className={classes.bigAvatar} />
+              <Typography gutterBottom variant="h5" component="h2">
+                {profile.dog_name}
+              </Typography>
+            </div>
+          )
+        })}
       </CardContent>
+
     </Card>
   );
 }
