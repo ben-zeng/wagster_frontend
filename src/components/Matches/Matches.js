@@ -7,7 +7,6 @@ import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { yellow } from '@material-ui/core/colors';
 import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
@@ -40,18 +39,16 @@ const useStyles = makeStyles(theme => ({
     height: 120,
     margin: theme.spacing(1),
   },
-  avatar: {
-    backgroundColor: yellow[300],
-    fontFamily: 'Raleway',
-    width: 50,
-    height: 50,
-    margin: theme.spacing(1),
-  },
   bigAvatar: {
     width: '4rem',
     height: '4rem',
     margin: theme.spacing(1),
     backgroundColor: theme.palette.secondary.main,
+  },
+  wagsterLogoSmall: {
+    width: 50,
+    height: 50,
+    margin: theme.spacing(1),
   },
 }));
 
@@ -90,23 +87,33 @@ export default function Matches() {
     history.push("/login")
   };
 
+  const getProfile = (userId) => {
+    return Axios.get(resolveAPIEndpoint(`profiles/${userId}`))
+      .then(response => response.data);
+  };
+
+  const completeProfiles = (profiles, matches) => {
+    return profiles.map(profile => {
+      profile.email = matches.find(match => match.user_id === profile.user_id).email;
+      return profile;
+    });
+  };
+
   useEffect(() => {
     if (!currentUser.isLoggedIn) {
       return;
     }
-    Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}/match_show`))
-      .then(function (response) {
-        const getAllProfiles = response.data.map(matchedProfileId => {
-          // TODO: Problem: We're passing profile ID, but backend is expecting user ID
-          return Axios.get(resolveAPIEndpoint(`profiles/${matchedProfileId}`))
-            .then(response => response.data);
-        });
 
-        Promise.all(getAllProfiles).then(profiles => {
-          setMatchedProfiles(profiles);
+    Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}/match_show`))
+      .then((response) => {
+        const matches = response.data;
+        const getMatchedProfiles = matches.map(match => getProfile(match.user_id));
+
+        Promise.all(getMatchedProfiles).then(profiles => {
+          setMatchedProfiles(completeProfiles(profiles, matches));
         });
       })
-      .catch(function (error) {
+      .catch((error) => {
         console.log(error);
       });
   }, [currentUser]);
@@ -118,9 +125,7 @@ export default function Matches() {
         titleTypographyProps={{ variant: "h5" }}
         avatar={
           <Grid container justify="center" alignItems="center">
-            <Avatar aria-label="wagster" className={classes.avatar}>
-              W
-             </Avatar>
+            <Avatar src="/images/wagster-logo.png" className={classes.wagsterLogoSmall} />
           </Grid>
         }
         action={
@@ -175,9 +180,9 @@ export default function Matches() {
                   </Typography>
                 </Grid>
                 <Grid item xs={2}>
-                  <IconButton onClick={() => { /* TODO: Email link */ }}>
+                  <a href={"mailto:" + profile.email}>
                     <ChatOutlined fontSize="large" />
-                  </IconButton>
+                  </a>
                 </Grid>
               </Grid>
             )
