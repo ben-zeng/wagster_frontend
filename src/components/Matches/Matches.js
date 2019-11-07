@@ -12,6 +12,7 @@ import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import MoreVertIcon from '@material-ui/icons/MoreVert';
 import Grid from '@material-ui/core/Grid';
+import ChatOutlined from '@material-ui/icons/ChatOutlined';
 import Axios from "axios";
 import { resolveAPIEndpoint, resolveAPIImage } from '../../helpers/APIResolveHelper';
 import { useGlobalState } from '../../helpers/GlobalState';
@@ -164,12 +165,21 @@ export default function Matches() {
         {matchedProfiles && matchedProfiles.length > 0 &&
           matchedProfiles.map(profile => {
             return (
-              <div key={profile.id}>
-                <Avatar alt={profile.dog_name} src={resolveAPIImage(profile.picture.url)} className={classes.bigAvatar} />
-                <Typography gutterBottom variant="h5" component="h2">
-                  {profile.dog_name}
-                </Typography>
-              </div>
+              <Grid key={profile.id} container justify="center" alignItems="center">
+                <Grid item xs={3}>
+                  <Avatar alt={profile.dog_name} src={resolveAPIImage(profile.picture.url)} className={classes.bigAvatar} />
+                </Grid>
+                <Grid item xs={7}>
+                  <Typography gutterBottom variant="h6" component="h2">
+                    {profile.dog_name}
+                  </Typography>
+                </Grid>
+                <Grid item xs={2}>
+                  <IconButton onClick={() => { /* TODO: Email link */ }}>
+                    <ChatOutlined fontSize="large" />
+                  </IconButton>
+                </Grid>
+              </Grid>
             )
           })
         }
