@@ -24,7 +24,9 @@ const useStyles = makeStyles(theme => ({
     },
   },
   card: {
-    flex: 1
+    flex: 1,
+    overflow: 'hidden',
+    margin: '5%'
   },
   action: {
     fontSize: 10
