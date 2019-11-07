@@ -78,7 +78,7 @@ export default function Login() {
                         Sign in
                     </Typography>
 
-                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                    <form className={classes.form} onSubmit={handleSubmit}>
                         <TextField
                             variant="outlined"
                             margin="normal"
@@ -87,6 +87,7 @@ export default function Login() {
                             id="email"
                             label="Email Address"
                             name="email"
+                            type="email"
                             autoComplete="email"
                             autoFocus
                             onChange={e => setEmail(e.target.value)}

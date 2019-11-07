@@ -85,13 +85,14 @@ export default function SignIn() {
                         Register
                         </Typography>
 
-                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                    <form className={classes.form}  onSubmit={handleSubmit}>
                         <TextField
                             variant="outlined"
                             margin="normal"
                             required
                             fullWidth
                             id="email"
+                            type="email"
                             label="Email Address"
                             name="email"
                             autoComplete="email"
