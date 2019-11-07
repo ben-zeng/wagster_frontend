@@ -9,7 +9,6 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import { yellow } from '@material-ui/core/colors';
 import PetsIcon from '@material-ui/icons/Pets';
 import CancelIcon from '@material-ui/icons/Cancel';
 import Menu from '@material-ui/core/Menu';
@@ -50,9 +49,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     objectFit: 'cover'
   },
-  avatar: {
-    backgroundColor: yellow[300],
-    fontFamily: 'Raleway',
+  wagsterLogoSmall: {
     width: 50,
     height: 50,
     margin: theme.spacing(1),
@@ -157,7 +154,7 @@ export default function UnmatchedProfiles() {
       <CardHeader
         avatar={
           <Grid container justify="center" alignItems="center">
-            <Avatar src="/images/wagster-logo.png" className={classes.avatar} />
+            <Avatar src="/images/wagster-logo.png" className={classes.wagsterLogoSmall} />
           </Grid>
         }
         action={

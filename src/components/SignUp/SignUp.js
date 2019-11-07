@@ -26,10 +26,9 @@ const useStyles = makeStyles(theme => ({
         margin: '5%'
     },
     wagsterLogoLarge: {
-        margin: 10,
         width: 200,
         height: 200,
-        marginTop: theme.spacing(10),
+        margin: theme.spacing(4),
     },
     form: {
         width: '100%', // Fix IE 11 issue.
