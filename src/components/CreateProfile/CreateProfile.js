@@ -2,12 +2,13 @@ import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import Card from '@material-ui/core/Card';
 import TextField from '@material-ui/core/TextField';
 import Typography from '@material-ui/core/Typography';
-import {makeStyles} from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import {useHistory} from 'react-router-dom'
-import {resolveAPIEndpoint} from '../../helpers/APIResolveHelper';
+import { useHistory } from 'react-router-dom'
+import { resolveAPIEndpoint } from '../../helpers/APIResolveHelper';
 import { useGlobalState } from '../../helpers/GlobalState';
 
 const useStyles = makeStyles(theme => ({
@@ -15,7 +16,10 @@ const useStyles = makeStyles(theme => ({
         body: {
             background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
         },
-      },
+    },
+    card: {
+        flex: 1
+    },
     paper: {
         marginTop: theme.spacing(8),
         display: 'flex',
@@ -41,35 +45,35 @@ const errorIs404 = (error) => {
 };
 
 export default function CreateProfile() {
-    const [ currentUser ] = useGlobalState("currentUser");
+    const [currentUser] = useGlobalState("currentUser");
     const history = useHistory();
 
     if (!currentUser.isLoggedIn) {
-      history.push("/login");
+        history.push("/login");
     }
 
     const classes = useStyles();
 
-    const [ dogName, setDogName ] = useState("");
-    const [ biography, setBiography ] = useState("");
-    const [ picture, setPicture ] = useState(null);
+    const [dogName, setDogName] = useState("");
+    const [biography, setBiography] = useState("");
+    const [picture, setPicture] = useState(null);
 
     useEffect(() => {
         if (!currentUser.isLoggedIn) {
-          return;
+            return;
         }
         Axios.get(resolveAPIEndpoint(`profiles/${currentUser.userId}`))
-          .then(response => {
-            if (response.data && response.data.user_id === currentUser.userId) {
-              history.push("/profile");
-            }
-          })
-          .catch(error => {
-            if (!errorIs404(error)) {
-                console.error(error);
-            }
-          })
-      }, []);
+            .then(response => {
+                if (response.data && response.data.user_id === currentUser.userId) {
+                    history.push("/profile");
+                }
+            })
+            .catch(error => {
+                if (!errorIs404(error)) {
+                    console.error(error);
+                }
+            })
+    }, [currentUser, history]);
 
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -114,55 +118,58 @@ export default function CreateProfile() {
     };
 
     return (
-        <Container component="main" maxWidth="xs">
-            <CssBaseline />
+        <Card className={classes.card}>
 
-            <div className={classes.paper}>
+            <Container component="main" maxWidth="xs">
+                <CssBaseline />
 
-                <Typography component="h1" variant="h5">
-                    Create Profile
+                <div className={classes.paper}>
+
+                    <Typography component="h1" variant="h5">
+                        Create Profile
                 </Typography>
 
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="dog_name"
-                        label="Dog Name"
-                        name="dog_name"
-                        autoFocus
-                        onChange={event => setDogName(event.target.value)}
-                    />
+                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="dog_name"
+                            label="Dog Name"
+                            name="dog_name"
+                            autoFocus
+                            onChange={event => setDogName(event.target.value)}
+                        />
 
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="biography"
-                        label="Biography"
-                        id="biography"
-                        multiline
-                        rows="4"
-                        onChange={event => setBiography(event.target.value)}
-                    />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="biography"
+                            label="Biography"
+                            id="biography"
+                            multiline
+                            rows="4"
+                            onChange={event => setBiography(event.target.value)}
+                        />
 
-                    <input type="file" onChange={event => setPicture(event.target.files[0])}/>
+                        <input type="file" onChange={event => setPicture(event.target.files[0])} />
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Create Profile!
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Create Profile!
                     </Button>
 
-                </form>
-            </div>
-        </Container>
-    );
+                    </form>
+                </div>
+            </Container>
+        </Card>
+    )
 }

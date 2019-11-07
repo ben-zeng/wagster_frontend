@@ -1,15 +1,15 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import Axios from 'axios';
 import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
 import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
+import CardHeader from '@material-ui/core/CardHeader';
+import Grid from '@material-ui/core/Grid';
+import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
 import Avatar from '@material-ui/core/Avatar';
-import {makeStyles} from '@material-ui/core/styles';
-import Container from '@material-ui/core/Container';
-import {useHistory} from 'react-router-dom'
+import { yellow } from '@material-ui/core/colors';
+import { makeStyles } from '@material-ui/core/styles';
+import { useHistory } from 'react-router-dom'
 import { resolveAPIEndpoint, resolveAPIImage } from '../../helpers/APIResolveHelper';
 import { useGlobalState } from '../../helpers/GlobalState';
 
@@ -18,22 +18,21 @@ const useStyles = makeStyles(theme => ({
         body: {
             background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
         },
-      },
-      card: {
-        maxWidth: 345,
-        'margin-left': '35%',
-        justifyContent: 'center',
-        width: "90%",
-        marginTop: theme.spacing(8),
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-      },
+    },
+    card: {
+        flex: 1
+    },
     paper: {
-        marginTop: theme.spacing(8),
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
+    },
+    avatar: {
+        backgroundColor: yellow[300],
+        fontFamily: 'Raleway',
+        width: 50,
+        height: 50,
+        margin: theme.spacing(1),
     },
     bigAvatar: {
         width: 100,
@@ -51,19 +50,19 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function UpdateProfile() {
-    const [ currentUser ] = useGlobalState("currentUser");
+    const [currentUser] = useGlobalState("currentUser");
     const history = useHistory();
 
     if (!currentUser.isLoggedIn) {
-      history.push("/login");
+        history.push("/login");
     }
 
     const classes = useStyles();
 
-    const [ dogName, setDogName ] = useState("");
-    const [ biography, setBiography ] = useState("");
-    const [ picture, setPicture ] = useState(null);
-    const [ currentPicture, setCurrentPicture ] = useState(null);
+    const [dogName, setDogName] = useState("");
+    const [biography, setBiography] = useState("");
+    const [picture, setPicture] = useState(null);
+    const [currentPicture, setCurrentPicture] = useState(null);
 
     useEffect(() => {
         if (!currentUser.isLoggedIn) {
@@ -74,7 +73,7 @@ export default function UpdateProfile() {
             setBiography(response.data.biography);
             setCurrentPicture(response.data.picture.url);
         });
-    }, []);
+    }, [currentUser]);
 
     if (dogName === null) {
         return <p>Loading profile...</p>;
@@ -96,7 +95,7 @@ export default function UpdateProfile() {
         }
     };
 
-    const patchForm = (pictureDataURL) => {        
+    const patchForm = (pictureDataURL) => {
         const formData = {
             profile: {
                 dog_name: dogName,
@@ -128,60 +127,58 @@ export default function UpdateProfile() {
 
     return (
         <Card className={classes.card}>
+            <CardHeader
+                title="Edit Profile"
+                avatar={
+                    <Grid container justify="center" alignItems="center">
+                        <Avatar aria-label="wagster" className={classes.avatar}>
+                            W
+                    </Avatar>
+                    </Grid>
+                }
+            />
+            <CardContent>
+                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        id="dog_name"
+                        value={dogName}
+                        name="dog_name"
+                        onChange={event => setDogName(event.target.value)}
+                    />
 
-            <CardActionArea>
-                <Container component="main" maxWidth="xs">
-                <CssBaseline />
+                    <TextField
+                        variant="outlined"
+                        margin="normal"
+                        required
+                        fullWidth
+                        name="biography"
+                        value={biography}
+                        id="biography"
+                        multiline
+                        rows="4"
+                        onChange={event => setBiography(event.target.value)}
+                    />
 
-                <div className={classes.paper}>
+                    <Avatar alt="{dogName}" src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
 
-                    <Typography component="h1" variant="h5">
-                        Update Profile
-                    </Typography>
+                    <input type="file" onChange={event => setPicture(event.target.files[0])} />
 
-                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            id="dog_name"
-                            value={dogName}
-                            name="dog_name"
-                            onChange={event => setDogName(event.target.value)}
-                        />
+                    <Button
+                        type="submit"
+                        fullWidth
+                        variant="contained"
+                        color="primary"
+                        className={classes.submit}
+                    >
+                        Update Profile!
+                    </Button>
 
-                        <TextField
-                            variant="outlined"
-                            margin="normal"
-                            required
-                            fullWidth
-                            name="biography"
-                            value={biography}
-                            id="biography"
-                            multiline
-                            rows="4"
-                            onChange={event => setBiography(event.target.value)}
-                        />
-
-                        <Avatar alt="{dogName}" src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
-
-                        <input type="file" onChange={event => setPicture(event.target.files[0])}/>
-
-                        <Button
-                            type="submit"
-                            fullWidth
-                            variant="contained"
-                            color="primary"
-                            className={classes.submit}
-                        >
-                            Update Profile!
-                        </Button>
-
-                    </form>
-                </div>
-            </Container>
-        </CardActionArea>
+                </form>
+            </CardContent>
         </Card>
     );
 }

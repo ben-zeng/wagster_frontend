@@ -1,20 +1,13 @@
+html, body, #root {
+  height: 100%;
+}
+
 .App {
-  text-align: center;
-}
-
-nav{
+  height: 100%;
   display: flex;
-  justify-content: space-around;
-  align-items: center;
-  min-height: 10vh;
-  background: cadetblue;
-  color: white;
-}
-
-.nav-links{
-  width: 40%;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  list-style-type: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: stretch;
+  flex-grow: 1;
+  padding: 5%;
 }
