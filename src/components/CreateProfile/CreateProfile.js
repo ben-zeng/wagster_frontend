@@ -127,7 +127,7 @@ export default function CreateProfile() {
                     Create Profile
                 </Typography>
 
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                <form className={classes.form}  onSubmit={handleSubmit}>
                     <TextField
                         variant="outlined"
                         margin="normal"
