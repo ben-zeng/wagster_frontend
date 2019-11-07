@@ -19,11 +19,13 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
-      background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+      background: 'radial-gradient(circle at 49% 55%, #c5e1a5, #66bb6a)',
     },
   },
   card: {
-    flex: 1
+    flex: 1,
+    overflow: 'auto',
+    margin: '5%'
   },
   action: {
     fontSize: 10
@@ -31,6 +33,11 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 0,
     paddingTop: '56.25%', // 16:9
+  },
+  noMatchesPug: {
+    width: 120,
+    height: 120,
+    margin: theme.spacing(1),
   },
   avatar: {
     backgroundColor: yellow[300],
@@ -103,17 +110,11 @@ export default function Matches() {
       });
   }, [currentUser]);
 
-  if (matchedProfiles === null) {
-    return <p>Loading your matches...</p>;
-  }
-
-  if (matchedProfiles && matchedProfiles.length === 0) {
-    return <p>Sorry, no matches just yet. Check back soon!</p>;
-  }
-
   return (
     <Card className={classes.card}>
       <CardHeader
+        title="My Matches"
+        titleTypographyProps={{ variant: "h5" }}
         avatar={
           <Grid container justify="center" alignItems="center">
             <Avatar aria-label="wagster" className={classes.avatar}>
@@ -144,16 +145,34 @@ export default function Matches() {
       />
 
       <CardContent>
-        {matchedProfiles.map(profile => {
-          return (
-            <div key={profile.id}>
-              <Avatar alt={profile.dog_name} src={resolveAPIImage(profile.picture.url)} className={classes.bigAvatar} />
-              <Typography gutterBottom variant="h5" component="h2">
-                {profile.dog_name}
-              </Typography>
-            </div>
-          )
-        })}
+        {matchedProfiles === null &&
+          <p>Loading your matches...</p>
+        }
+
+        {matchedProfiles && matchedProfiles.length === 0 &&
+          <>
+            <Grid container justify="center" alignItems="center">
+              <Avatar src="/images/no-matches-pug.jpg" className={classes.noMatchesPug} />
+            </Grid>
+            <Typography variant="body1" align="center">Sorry, no matches just yet...</Typography>
+            <Typography variant="body1" align="center">
+              <Link to="/">Keep matching</Link> and check back soon!
+            </Typography>
+          </>
+        }
+
+        {matchedProfiles && matchedProfiles.length > 0 &&
+          matchedProfiles.map(profile => {
+            return (
+              <div key={profile.id}>
+                <Avatar alt={profile.dog_name} src={resolveAPIImage(profile.picture.url)} className={classes.bigAvatar} />
+                <Typography gutterBottom variant="h5" component="h2">
+                  {profile.dog_name}
+                </Typography>
+              </div>
+            )
+          })
+        }
       </CardContent>
 
     </Card>

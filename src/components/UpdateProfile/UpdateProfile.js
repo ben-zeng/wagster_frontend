@@ -6,6 +6,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import Grid from '@material-ui/core/Grid';
 import CardContent from '@material-ui/core/CardContent';
 import TextField from '@material-ui/core/TextField';
+import Container from '@material-ui/core/Container';
 import Avatar from '@material-ui/core/Avatar';
 import { yellow } from '@material-ui/core/colors';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,16 +17,13 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
     '@global': {
         body: {
-            background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+            background: 'radial-gradient(circle at 49% 55%, #c5e1a5, #66bb6a)',
         },
     },
     card: {
-        flex: 1
-    },
-    paper: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
+        flex: 1,
+        overflow: 'auto',
+        margin: '5%'
     },
     avatar: {
         backgroundColor: yellow[300],
@@ -129,55 +127,58 @@ export default function UpdateProfile() {
         <Card className={classes.card}>
             <CardHeader
                 title="Edit Profile"
+                titleTypographyProps={{ variant: "h5" }}
                 avatar={
                     <Grid container justify="center" alignItems="center">
                         <Avatar aria-label="wagster" className={classes.avatar}>
                             W
-                    </Avatar>
+                        </Avatar>
                     </Grid>
                 }
             />
             <CardContent>
-                <form className={classes.form} noValidate onSubmit={handleSubmit}>
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        id="dog_name"
-                        value={dogName}
-                        name="dog_name"
-                        onChange={event => setDogName(event.target.value)}
-                    />
+                <Container component="main" maxWidth="xs">
+                    <form className={classes.form} noValidate onSubmit={handleSubmit}>
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            id="dog_name"
+                            value={dogName}
+                            name="dog_name"
+                            onChange={event => setDogName(event.target.value)}
+                        />
 
-                    <TextField
-                        variant="outlined"
-                        margin="normal"
-                        required
-                        fullWidth
-                        name="biography"
-                        value={biography}
-                        id="biography"
-                        multiline
-                        rows="4"
-                        onChange={event => setBiography(event.target.value)}
-                    />
+                        <TextField
+                            variant="outlined"
+                            margin="normal"
+                            required
+                            fullWidth
+                            name="biography"
+                            value={biography}
+                            id="biography"
+                            multiline
+                            rows="4"
+                            onChange={event => setBiography(event.target.value)}
+                        />
 
-                    <Avatar alt={dogName} src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
+                        <Avatar alt={dogName} src={resolveAPIImage(currentPicture)} className={classes.bigAvatar} />
 
-                    <input type="file" onChange={event => setPicture(event.target.files[0])} />
+                        <input type="file" onChange={event => setPicture(event.target.files[0])} />
 
-                    <Button
-                        type="submit"
-                        fullWidth
-                        variant="contained"
-                        color="primary"
-                        className={classes.submit}
-                    >
-                        Update Profile!
-                    </Button>
+                        <Button
+                            type="submit"
+                            fullWidth
+                            variant="contained"
+                            color="primary"
+                            className={classes.submit}
+                        >
+                            Update Profile!
+                        </Button>
 
-                </form>
+                    </form>
+                </Container>
             </CardContent>
         </Card>
     );

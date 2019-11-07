@@ -20,16 +20,13 @@ import { useGlobalState } from '../../helpers/GlobalState';
 const useStyles = makeStyles(theme => ({
   '@global': {
     body: {
-      background: 'radial-gradient(circle at 49% 55%, #ffecb3, #ffe082)',
+        background: 'radial-gradient(circle at 49% 55%, #c5e1a5, #66bb6a)',
     },
   },
   card: {
     flex: 1,
     overflow: 'auto',
     margin: '5%'
-  },
-  action: {
-    fontSize: 10
   },
   media: {
     height: 350,
@@ -103,7 +100,6 @@ export default function Profile() {
   return (
     <Card className={classes.card}>
       <CardHeader
-        title="My Profile"
         avatar={
           <Grid container justify="center" alignItems="center">
             <Avatar aria-label="wagster" className={classes.avatar}>
