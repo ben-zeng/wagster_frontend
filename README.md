@@ -21,7 +21,7 @@ Hosted live on Heroku - [https://wagster.herokuapp.com](https://wagster.herokuap
 - JWT for authentication
 - Material-UI for frontend theming
 
-### To run in development mode
+### To run frontend server in development mode
 
 - Clone this repo
 - `$ cd wagster_frontend`
