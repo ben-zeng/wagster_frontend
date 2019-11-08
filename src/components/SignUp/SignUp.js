@@ -70,7 +70,11 @@ export default function SignIn() {
                 history.push("/profile/create");
             });
         }).catch(error => {
-            alert(error)
+            if (error.response.status === 422) {
+                alert("Account already exists")
+            }
+            else
+                console.log(error);
         });
     };
 

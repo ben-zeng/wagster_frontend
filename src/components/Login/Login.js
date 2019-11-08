@@ -69,6 +69,8 @@ export default function Login() {
             if (error.response.status === 401) {
                 alert("Incorrect email or password!")
             }
+            else
+                console.log(error);
         })
     };
 
