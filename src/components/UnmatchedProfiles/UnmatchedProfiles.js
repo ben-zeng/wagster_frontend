@@ -104,7 +104,18 @@ export default function UnmatchedProfiles() {
     Axios.post(resolveAPIEndpoint(`profiles/${currentUser.userId}/accept`), {
       profile: profileId
     })
-      .then(removeCurrentProfile)
+        .then(response => {
+          console.log(response);
+          if (response.data.match_id != null) {
+            alert("You have a new match, check your matches now ;)")
+          }
+          removeCurrentProfile();
+          // if (response.data.length === 0) {
+          //   return setProfilesToDisplay(false);
+          // }
+          // setProfiles(response.data);
+        })
+        // .then(removeCurrentProfile)
       .catch(function (error) {
         console.log(error);
       });
