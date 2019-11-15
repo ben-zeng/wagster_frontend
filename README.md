@@ -9,6 +9,11 @@ Hosted live on Heroku - [https://wagster.herokuapp.com](https://wagster.herokuap
 - Built using React.js on the frontend - [GitHub Repo](https://github.com/ben-zeng/wagster_frontend/)
 - Built using Rails on the backend - [GitHub Repo](https://github.com/ben-zeng/wagster-api/)
 
+### Demo
+
+![Demo 1](./readme_images/wagster_demo1.gif ) ![Demo 2](./readme_images/wagster_demo2.gif)
+
+
 ### Stack used
 
 - React v16 for frontend, bootstrapped with [Create React App](https://github.com/facebook/create-react-app)
