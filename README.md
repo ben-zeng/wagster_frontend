@@ -11,7 +11,7 @@ Hosted live on Heroku - [https://wagster.herokuapp.com](https://wagster.herokuap
 
 ### Demo
 
-![Demo 1](./readme_images/wagster_demo1.gif ) ![Demo 2](./readme_images/wagster_demo2.gif)
+![Demo 1](./readme_images/wagster_demo_1.gif ) ![Demo 2](./readme_images/wagster_demo_2.gif)
 
 
 ### Stack used
